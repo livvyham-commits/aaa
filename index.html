@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en-AU" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE TIME</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            canvas: '#FBFBFB',
+            card: '#FFFFFF',
+            border: '#E2E8F0',
+            borderDark: '#CBD5E1',
+            ink: '#09090B',
+            inkMuted: '#64748B',
+            inkLight: '#94A3B8',
+            pinkAccent: {
+              DEFAULT: '#BE185D',
+              hover: '#9D174D',
+              light: '#FCE7F3'
+            },
+            palette: {
+              slate: { bg: '#EEF2FF', border: '#C7D2FE', text: '#3730A3', dot: '#4338CA' },
+              emerald: { bg: '#E6F4EA', border: '#A7F3D0', text: '#065F46', dot: '#059669' },
+              gold: { bg: '#FEF3C7', border: '#FDE68A', text: '#92400E', dot: '#D97706' },
+              violet: { bg: '#F3E8FF', border: '#DDD6FE', text: '#5B21B6', dot: '#7C3AED' },
+              rose: { bg: '#FFE4E6', border: '#FECDD3', text: '#9F1239', dot: '#E11D48' },
+              coral: { bg: '#FFEDD5', border: '#FED7AA', text: '#9A3412', dot: '#EA580C' },
+              amber: { bg: '#FEF9C3', border: '#FEF08A', text: '#854D0E', dot: '#CA8A04' },
+              cyan: { bg: '#E0F2FE', border: '#BAE6FD', text: '#0369A1', dot: '#0284C7' },
+              pink: { bg: '#FCE7F3', border: '#FBCFE8', text: '#9D174D', dot: '#DB2777' },
+              sage: { bg: '#DCFCE7', border: '#BBF7D0', text: '#166534', dot: '#16A34A' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FBFBFB;
+      color: #09090B;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #FBFBFB;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    
+    .grid-lines {
+      border-top: 1px solid #E2E8F0;
+      border-left: 1px solid #E2E8F0;
+    }
+    .grid-lines > * {
+      border-right: 1px solid #E2E8F0;
+      border-bottom: 1px solid #E2E8F0;
+    }
+
+    .drawer-transition {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- HEADER -->
+  <header class="border-b border-border bg-card/90 backdrop-blur-md sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-ink uppercase">
+          THE TIME
+        </h1>
+        <p class="text-[11px] font-semibold tracking-wider text-inkMuted uppercase mt-0.5" id="headerDateStr">
+          --/--/----
+        </p>
+      </div>
+
+      <!-- MAIN TABS -->
+      <nav class="flex space-x-1 bg-canvas p-1 rounded-xl border border-border">
+        <button onclick="switchMainTab('TIME')" id="tabBtnTIME" class="px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
+          TIME
+        </button>
+        <button onclick="switchMainTab('BUILD')" id="tabBtnBUILD" class="px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
+          BUILD
+        </button>
+        <button onclick="switchMainTab('TEMPLATE')" id="tabBtnTEMPLATE" class="px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
+          TEMPLATE
+        </button>
+        <button onclick="switchMainTab('GOAL')" id="tabBtnGOAL" class="px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
+          GOAL
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- DAILY ANCHORS / COMMITMENT SHELF -->
+    <section class="mb-6 bg-card p-4 rounded-xl border border-border space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-inkMuted">Daily Anchors</h2>
+        <div class="flex items-center gap-3 text-xs font-medium text-inkMuted">
+          <span id="anchorSummaryText">0 / 0 Hours Scheduled</span>
+          <button onclick="openManageAnchorsModal()" class="text-xs text-ink font-bold hover:underline">+ Manage Anchors</button>
+        </div>
+      </div>
+      
+      <div id="anchorContainer" class="flex flex-wrap gap-2">
+        <!-- User Defined Anchors Rendered Here -->
+      </div>
+    </section>
+
+    <!-- TAB 1: TIME -->
+    <section id="viewTIME" class="tab-content space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-xl border border-border">
+        <span class="text-xs font-bold uppercase tracking-wider text-inkMuted">Schedule View</span>
+        <div class="flex items-center gap-1 bg-canvas p-1 rounded-lg border border-border">
+          <button onclick="switchTimeSubView('Day')" id="timeSubBtnDay" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Day</button>
+          <button onclick="switchTimeSubView('Week')" id="timeSubBtnWeek" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Week</button>
+          <button onclick="switchTimeSubView('Month')" id="timeSubBtnMonth" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Month</button>
+        </div>
+      </div>
+
+      <!-- TIME DAY -->
+      <div id="timeSubViewDay" class="space-y-4">
+        <div class="bg-card p-6 rounded-xl border border-border text-center max-w-2xl mx-auto space-y-3 shadow-2xs">
+          <div class="text-[11px] font-bold tracking-widest uppercase text-inkMuted">NOW</div>
+          <div class="border-b border-border pb-4 flex flex-col items-center justify-center gap-1">
+            <span class="text-2xl font-black text-pinkAccent tracking-tight" id="timeCurrentSlotTime">--:-- --</span>
+            <span class="text-base font-bold text-ink" id="timeCurrentSlotText">No activity scheduled</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-xs text-inkMuted pt-1">
+            <span class="font-bold uppercase tracking-wider text-[10px]">NEXT:</span>
+            <span class="font-semibold text-ink" id="timeNextSlotText">--</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between bg-card p-3.5 rounded-xl border border-border">
+          <button onclick="toggleTimeEarlier()" id="timeEarlierBtn" class="px-3.5 py-1.5 bg-canvas hover:bg-border/50 text-ink text-xs font-bold rounded-lg border border-border transition-all">
+            EARLIER
+          </button>
+          <div class="flex items-center gap-3">
+            <button onclick="changeTimeDay(-1)" class="w-8 h-8 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-ink text-xs font-bold">&larr;</button>
+            <span class="text-xs font-extrabold text-ink px-2 tracking-wider" id="timeDayLabel">--/--/----</span>
+            <button onclick="changeTimeDay(1)" class="w-8 h-8 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-xs font-bold">&rarr;</button>
+          </div>
+        </div>
+
+        <div class="bg-card rounded-xl border border-border p-4 sm:p-5">
+          <div class="space-y-1.5 max-h-[600px] overflow-y-auto custom-scrollbar pr-2" id="timeScheduleContainer"></div>
+        </div>
+      </div>
+
+      <!-- TIME WEEK -->
+      <div id="timeSubViewWeek" class="hidden space-y-4">
+        <div class="flex items-center justify-between bg-card p-4 rounded-xl border border-border">
+          <div class="font-bold text-ink text-xs uppercase tracking-wider" id="timeWeekLabel">Week Overview</div>
+          <div class="flex items-center gap-2">
+            <button onclick="changeTimeWeek(-1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
+            <button onclick="resetTimeWeekToday()" class="px-3 py-1 bg-canvas hover:bg-border/50 text-ink text-xs font-bold rounded border border-border">TODAY</button>
+            <button onclick="changeTimeWeek(1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
+          </div>
+        </div>
+
+        <div class="bg-card rounded-xl border border-border overflow-hidden">
+          <div class="grid grid-cols-7 grid-lines" id="timeWeekGrid"></div>
+        </div>
+      </div>
+
+      <!-- TIME MONTH -->
+      <div id="timeSubViewMonth" class="hidden space-y-4">
+        <div class="flex items-center justify-between bg-card p-4 rounded-xl border border-border">
+          <button onclick="changeTimeMonth(-1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
+          <div class="font-bold text-ink text-xs uppercase tracking-wider" id="timeMonthLabel">MONTH YEAR</div>
+          <button onclick="changeTimeMonth(1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
+        </div>
+
+        <div class="bg-card rounded-xl border border-border overflow-hidden p-4">
+          <div class="grid grid-cols-7 text-center text-[11px] font-bold uppercase text-inkMuted py-2 border-b border-border">
+            <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+          </div>
+          <div class="grid grid-cols-7 grid-lines mt-2" id="timeMonthGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: BUILD -->
+    <section id="viewBUILD" class="tab-content hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-xl border border-border">
+        <span class="text-xs font-bold uppercase tracking-wider text-inkMuted">Schedule Setup</span>
+        <div class="flex items-center gap-1 bg-canvas p-1 rounded-lg border border-border">
+          <button onclick="switchBuildSubView('Day')" id="buildSubBtnDay" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Day</button>
+          <button onclick="switchBuildSubView('Week')" id="buildSubBtnWeek" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Week</button>
+          <button onclick="switchBuildSubView('Month')" id="buildSubBtnMonth" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Month</button>
+        </div>
+      </div>
+
+      <!-- BUILD DAY -->
+      <div id="buildSubViewDay" class="space-y-4">
+        <!-- CUSTOM BLOCK STAMPS / PRESETS PALETTE -->
+        <div class="bg-card p-4 rounded-xl border border-border space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-[11px] font-bold text-inkMuted uppercase tracking-wider">Quick Stamps</span>
+            <button onclick="openManageStampsModal()" class="text-xs text-ink font-bold hover:underline">+ Manage Stamps</button>
+          </div>
+          <div id="stampsPalette" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-card p-4 rounded-xl border border-border">
+          <div class="flex items-center gap-3">
+            <button onclick="changeBuildDay(-1)" class="w-8 h-8 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-ink text-xs font-bold">&larr;</button>
+            <input type="date" id="buildDatePicker" onchange="onBuildDateChange()" class="px-3 py-1.5 bg-canvas border border-border rounded-lg text-xs font-semibold text-ink focus:outline-none">
+            <button onclick="changeBuildDay(1)" class="w-8 h-8 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-ink text-xs font-bold">&rarr;</button>
+            <span id="buildDayFormattedLabel" class="text-xs font-bold text-ink">--/--/----</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="copyScheduleToOtherDays()" class="px-3.5 py-1.5 bg-canvas hover:bg-border/50 text-ink text-xs font-bold rounded-lg border border-border transition-all">
+              COPY SCHEDULE
+            </button>
+            <button onclick="applyDayTemplateToCurrentBuild()" class="px-3.5 py-1.5 bg-pinkAccent hover:bg-pinkAccent-hover text-white text-xs font-bold rounded-lg transition-all shadow-2xs">
+              APPLY TEMPLATE
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-card rounded-xl border border-border p-4 sm:p-5">
+          <div id="buildScheduleContainer" class="space-y-1.5 max-h-[550px] overflow-y-auto custom-scrollbar pr-2"></div>
+        </div>
+      </div>
+
+      <!-- BUILD WEEK -->
+      <div id="buildSubViewWeek" class="hidden space-y-4">
+        <div class="flex items-center justify-between bg-card p-4 rounded-xl border border-border">
+          <button onclick="changeBuildWeek(-1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
+          <div class="font-bold text-ink text-xs uppercase tracking-wider" id="buildWeekLabel">WEEK DATES</div>
+          <button onclick="changeBuildWeek(1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
+        </div>
+
+        <div class="bg-card rounded-xl border border-border overflow-hidden">
+          <div class="grid grid-cols-7 grid-lines" id="buildWeekGrid"></div>
+        </div>
+      </div>
+
+      <!-- BUILD MONTH -->
+      <div id="buildSubViewMonth" class="hidden space-y-4">
+        <div class="flex items-center justify-between bg-card p-4 rounded-xl border border-border">
+          <button onclick="changeBuildMonth(-1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
+          <h2 class="font-extrabold text-ink text-sm uppercase tracking-wider text-center flex-1" id="buildMonthCenteredTitle">MONTH YEAR</h2>
+          <button onclick="changeBuildMonth(1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
+        </div>
+
+        <div class="bg-card rounded-xl border border-border overflow-hidden p-4">
+          <div class="grid grid-cols-7 text-center text-[11px] font-bold uppercase text-inkMuted py-2 border-b border-border">
+            <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+          </div>
+          <div class="grid grid-cols-7 grid-lines mt-2" id="buildMonthGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: TEMPLATE -->
+    <section id="viewTEMPLATE" class="tab-content hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-xl border border-border">
+        <span class="text-xs font-bold uppercase tracking-wider text-inkMuted">Master Day Templates</span>
+        <div class="flex items-center gap-1 bg-canvas p-1 rounded-lg border border-border">
+          <button onclick="switchTemplateDay('Monday')" id="templateBtnMonday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Mon</button>
+          <button onclick="switchTemplateDay('Tuesday')" id="templateBtnTuesday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Tue</button>
+          <button onclick="switchTemplateDay('Wednesday')" id="templateBtnWednesday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Wed</button>
+          <button onclick="switchTemplateDay('Thursday')" id="templateBtnThursday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Thu</button>
+          <button onclick="switchTemplateDay('Friday')" id="templateBtnFriday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Fri</button>
+          <button onclick="switchTemplateDay('Saturday')" id="templateBtnSaturday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Sat</button>
+          <button onclick="switchTemplateDay('Sunday')" id="templateBtnSunday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Sun</button>
+        </div>
+      </div>
+
+      <div class="bg-card p-4 rounded-xl border border-border flex items-center justify-between">
+        <h3 class="font-extrabold text-ink text-xs uppercase tracking-wider" id="templateDayHeader">Monday Template</h3>
+        <button onclick="clearCurrentTemplateDay()" class="px-3 py-1.5 bg-canvas hover:bg-pinkAccent-light text-pinkAccent text-xs font-bold rounded-lg border border-border transition-all">
+          CLEAR TEMPLATE
+        </button>
+      </div>
+
+      <div class="bg-card rounded-xl border border-border p-4 sm:p-5">
+        <div id="templateScheduleContainer" class="space-y-1.5 max-h-[550px] overflow-y-auto custom-scrollbar pr-2"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: GOAL -->
+    <section id="viewGOAL" class="tab-content hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-xl border border-border">
+        <span class="text-xs font-bold uppercase tracking-wider text-inkMuted">Goals & Targets</span>
+        
+        <div class="flex items-center gap-3">
+          <button onclick="toggleLongTermDrawer(true)" class="px-3.5 py-1.5 bg-canvas hover:bg-border/40 text-ink font-bold text-xs uppercase tracking-wider rounded-lg border border-border transition-all">
+            LONG TERM & MILESTONES
+          </button>
+
+          <div class="flex items-center gap-1 bg-canvas p-1 rounded-lg border border-border">
+            <button onclick="switchGoalSubView('Day')" id="goalSubBtnDay" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Daily</button>
+            <button onclick="switchGoalSubView('Week')" id="goalSubBtnWeek" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Weekly</button>
+            <button onclick="switchGoalSubView('Month')" id="goalSubBtnMonth" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Monthly</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-card rounded-xl border border-border p-6 space-y-6">
+        <div class="flex items-center justify-between pb-3 border-b border-border">
+          <h3 class="font-bold text-ink text-xs uppercase tracking-wider" id="goalViewTitle">Active Goals</h3>
+          <button onclick="openAddGoalModal()" class="px-3 py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-xs rounded-lg border border-border">
+            + Add Goal
+          </button>
+        </div>
+
+        <div id="activeGoalsContainer" class="space-y-4"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: EDIT TIME SLOT -->
+  <div id="multiBlockModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-card border border-border rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center border-b border-border pb-3">
+        <div>
+          <h3 class="font-bold text-ink text-xs uppercase tracking-wider">Edit Block</h3>
+          <p class="text-[10px] text-inkMuted font-semibold mt-0.5" id="multiBlockStartTimeLabel">Start: --:-- --</p>
+        </div>
+        <button onclick="closeMultiBlockModal()" class="text-inkMuted hover:text-ink text-lg font-bold">&times;</button>
+      </div>
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Activity Name</label>
+          <input type="text" id="multiTitle" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
+        </div>
+        
+        <div>
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Duration Presets</label>
+          <div class="grid grid-cols-6 gap-1">
+            <button type="button" onclick="setPresetDuration(15)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">15m</button>
+            <button type="button" onclick="setPresetDuration(30)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">30m</button>
+            <button type="button" onclick="setPresetDuration(60)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">1h</button>
+            <button type="button" onclick="setPresetDuration(120)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">2h</button>
+            <button type="button" onclick="setPresetDuration(240)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">4h</button>
+            <button type="button" onclick="setPresetDuration(480)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">8h</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Start Time</label>
+            <select id="multiStartTime" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink font-semibold focus:outline-none"></select>
+          </div>
+          <div>
+            <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">End Time</label>
+            <select id="multiEndTime" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink font-semibold focus:outline-none"></select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-inkMuted mb-2 uppercase tracking-wider text-[10px]">Color Accent</label>
+          <div id="multiColorSwatches" class="grid grid-cols-5 gap-2"></div>
+          <input type="hidden" id="multiColorVal" value="slate">
+        </div>
+      </div>
+      <div class="flex justify-between items-center pt-2 border-t border-border">
+        <button onclick="clearSingleBlock()" class="px-3 py-2 text-xs font-semibold text-pinkAccent hover:bg-pinkAccent-light rounded-lg">Clear Slot</button>
+        <div class="flex gap-2">
+          <button onclick="closeMultiBlockModal()" class="px-4 py-2 text-xs font-semibold text-inkMuted hover:bg-canvas rounded-lg">Cancel</button>
+          <button onclick="saveMultiBlockRange()" class="px-4 py-2 bg-ink text-white font-bold text-xs rounded-lg shadow-xs">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MANAGE ANCHORS -->
+  <div id="anchorsModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-card border border-border rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center border-b border-border pb-3">
+        <h3 class="font-bold text-ink text-xs uppercase tracking-wider">Manage Daily Anchors</h3>
+        <button onclick="closeManageAnchorsModal()" class="text-inkMuted hover:text-ink text-lg font-bold">&times;</button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Anchor Name</label>
+          <input type="text" id="newAnchorName" placeholder="e.g. Deep Focus, Morning Walk" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
+        </div>
+        <div>
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Duration (Minutes)</label>
+          <input type="number" id="newAnchorMins" value="60" min="15" step="15" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
+        </div>
+        <button onclick="addCustomAnchor()" class="w-full py-2 bg-ink text-white text-xs font-bold rounded-lg">+ Add Anchor</button>
+
+        <div class="pt-3 border-t border-border space-y-2 max-h-48 overflow-y-auto custom-scrollbar" id="anchorListContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MANAGE STAMPS -->
+  <div id="stampsModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-card border border-border rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center border-b border-border pb-3">
+        <h3 class="font-bold text-ink text-xs uppercase tracking-wider">Manage Quick Stamps</h3>
+        <button onclick="closeManageStampsModal()" class="text-inkMuted hover:text-ink text-lg font-bold">&times;</button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Stamp Name</label>
+          <input type="text" id="newStampName" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
+        </div>
+        <div>
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Default Duration (Mins)</label>
+          <input type="number" id="newStampMins" value="60" min="15" step="15" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
+        </div>
+        <div>
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Color</label>
+          <div id="stampColorSwatches" class="grid grid-cols-5 gap-2 mb-2"></div>
+          <input type="hidden" id="newStampColor" value="slate">
+        </div>
+        <button onclick="addCustomStamp()" class="w-full py-2 bg-ink text-white text-xs font-bold rounded-lg">+ Add Stamp Preset</button>
+
+        <div class="pt-3 border-t border-border space-y-2 max-h-48 overflow-y-auto custom-scrollbar" id="stampsListContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRAWER: LONG TERM GOALS -->
+  <div id="longTermDrawerBackdrop" onclick="toggleLongTermDrawer(false)" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-40 hidden"></div>
+  <aside id="longTermDrawer" class="fixed top-0 right-0 h-full w-full sm:w-[440px] bg-card border-l border-border z-50 shadow-xl transform translate-x-full drawer-transition flex flex-col">
+    <div class="p-5 border-b border-border flex items-center justify-between">
+      <div>
+        <h2 class="font-bold text-sm uppercase tracking-wider text-ink">Long Term & Milestones</h2>
+      </div>
+      <button onclick="toggleLongTermDrawer(false)" class="text-inkMuted hover:text-ink text-lg font-bold">&times;</button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar" id="longTermGoalsContainer"></div>
+  </aside>
+
+  <!-- ADD GOAL MODAL -->
+  <div id="addGoalModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-card border border-border rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center border-b border-border pb-3">
+        <h3 class="font-bold text-ink text-xs uppercase tracking-wider" id="goalModalTitle">Add Target</h3>
+        <button onclick="closeAddGoalModal()" class="text-inkMuted hover:text-ink text-lg font-bold">&times;</button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Title</label>
+          <input type="text" id="goalInputTitle" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Target Value</label>
+            <input type="number" id="goalInputTarget" value="10" min="1" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Unit Label</label>
+            <input type="text" id="goalInputUnit" placeholder="e.g. sessions, hours" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Notes</label>
+          <textarea id="goalInputNotes" rows="2" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none resize-none"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeAddGoalModal()" class="px-4 py-2 text-xs font-semibold text-inkMuted hover:bg-canvas rounded-lg">Cancel</button>
+        <button onclick="saveNewGoal()" class="px-4 py-2 bg-ink text-white font-bold text-xs rounded-lg">Save Target</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PALETTE_COLORS = [
+      { id: 'slate', name: 'Slate Blue', bg: 'bg-palette-slate-bg', border: 'border-palette-slate-border', text: 'text-palette-slate-text', dot: '#4338CA' },
+      { id: 'emerald', name: 'Emerald', bg: 'bg-palette-emerald-bg', border: 'border-palette-emerald-border', text: 'text-palette-emerald-text', dot: '#059669' },
+      { id: 'gold', name: 'Warm Gold', bg: 'bg-palette-gold-bg', border: 'border-palette-gold-border', text: 'text-palette-gold-text', dot: '#D97706' },
+      { id: 'violet', name: 'Violet', bg: 'bg-palette-violet-bg', border: 'border-palette-violet-border', text: 'text-palette-violet-text', dot: '#7C3AED' },
+      { id: 'rose', name: 'Rose Red', bg: 'bg-palette-rose-bg', border: 'border-palette-rose-border', text: 'text-palette-rose-text', dot: '#E11D48' },
+      { id: 'coral', name: 'Coral', bg: 'bg-palette-coral-bg', border: 'border-palette-coral-border', text: 'text-palette-coral-text', dot: '#EA580C' },
+      { id: 'amber', name: 'Amber', bg: 'bg-palette-amber-bg', border: 'border-palette-amber-border', text: 'text-palette-amber-text', dot: '#CA8A04' },
+      { id: 'cyan', name: 'Deep Cyan', bg: 'bg-palette-cyan-bg', border: 'border-palette-cyan-border', text: 'text-palette-cyan-text', dot: '#0284C7' },
+      { id: 'pink', name: 'Soft Pink', bg: 'bg-palette-pink-bg', border: 'border-palette-pink-border', text: 'text-palette-pink-text', dot: '#DB2777' },
+      { id: 'sage', name: 'Sage Green', bg: 'bg-palette-sage-bg', border: 'border-palette-sage-border', text: 'text-palette-sage-text', dot: '#16A34A' }
+    ];
+
+    let appState = {
+      mainTab: 'TIME',
+      timeSubView: 'Day',
+      buildSubView: 'Day',
+      goalSubView: 'Day',
+      templateDay: 'Monday',
+      showTimeEarlier: false,
+      selectedDate: new Date().toISOString().split('T')[0],
+      schedules: {},
+      dayTemplates: { Monday: {}, Tuesday: {}, Wednesday: {}, Thursday: {}, Friday: {}, Saturday: {}, Sunday: {} },
+      anchors: [],
+      stamps: [],
+      goals: { Day: [], Week: [], Month: [], Milestone: [] }
+    };
+
+    let activeClickedSlotKey = "09:00";
+    let activeStamp = null;
+
+    function loadAppState() {
+      const saved = localStorage.getItem('THE_TIME_APP_MASTER_DATA');
+      if (saved) {
+        try {
+          appState = { ...appState, ...JSON.parse(saved) };
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+
+    function saveAppState() {
+      localStorage.setItem('THE_TIME_APP_MASTER_DATA', JSON.stringify(appState));
+    }
+
+    function parseISODate(isoStr) {
+      if (!isoStr || typeof isoStr !== 'string') return new Date();
+      const parts = isoStr.split('-');
+      return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    }
+
+    function toISODate(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const d = String(dateObj.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function formatAussieDate(dateObj, includeYear = true) {
+      const d = String(dateObj.getDate()).padStart(2, '0');
+      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+      if (!includeYear) return `${d}/${m}`;
+      return `${d}/${m}/${dateObj.getFullYear()}`;
+    }
+
+    function format12Hour(hour, minute) {
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      let h12 = hour % 12;
+      if (h12 === 0) h12 = 12;
+      return `${String(h12).padStart(2, '0')}:${String(minute).padStart(2, '0')} ${ampm}`;
+    }
+
+    function parse12HourLabel(time24Key) {
+      if (!time24Key || time24Key === "24:00") return "12:00 AM";
+      const [h, m] = time24Key.split(':').map(Number);
+      return format12Hour(h, m);
+    }
+
+    window.onload = function() {
+      loadAppState();
+      updateHeaderDate();
+      populateMultiSelectOptions();
+      initSwatches();
+      renderAnchors();
+      renderStampsPalette();
+
+      if (!appState.selectedDate) appState.selectedDate = toISODate(new Date());
+      const picker = document.getElementById('buildDatePicker');
+      if (picker) picker.value = appState.selectedDate;
+
+      switchMainTab(appState.mainTab || 'TIME');
+    };
+
+    function updateHeaderDate() {
+      document.getElementById('headerDateStr').innerText = formatAussieDate(new Date(), true);
+    }
+
+    function switchMainTab(tab) {
+      appState.mainTab = tab;
+      saveAppState();
+      ['TIME', 'BUILD', 'TEMPLATE', 'GOAL'].forEach(t => {
+        const btn = document.getElementById(`tabBtn${t}`);
+        const view = document.getElementById(`view${t}`);
+        if (t === tab) {
+          btn.className = 'px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase bg-card text-ink shadow-2xs border border-border';
+          view.classList.remove('hidden');
+        } else {
+          btn.className = 'px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase text-inkMuted hover:text-ink';
+          view.classList.add('hidden');
+        }
+      });
+
+      if (tab === 'TIME') renderTimeView();
+      if (tab === 'BUILD') renderBuildView();
+      if (tab === 'TEMPLATE') renderTemplateView();
+      if (tab === 'GOAL') renderGoalView();
+      renderAnchors();
+    }
+
+    // ANCHORS / DAILY COMMITMENT SHELF
+    function renderAnchors() {
+      const container = document.getElementById('anchorContainer');
+      container.innerHTML = '';
+
+      if (appState.anchors.length === 0) {
+        container.innerHTML = `<span class="text-xs text-inkMuted italic">No anchors created yet. Click '+ Manage Anchors' to add your daily non-negotiables.</span>`;
+        document.getElementById('anchorSummaryText').innerText = `0 Hours Total`;
+        return;
+      }
+
+      const currentSchedule = appState.schedules[appState.selectedDate] || {};
+      let totalMins = 0;
+      let scheduledMins = 0;
+
+      appState.anchors.forEach((anc, idx) => {
+        totalMins += anc.mins;
+        let count = 0;
+        Object.values(currentSchedule).forEach(slot => {
+          if (slot.text && slot.text.toLowerCase() === anc.name.toLowerCase()) count++;
+        });
+        const currentMinsScheduled = count * 15;
+        scheduledMins += currentMinsScheduled;
+
+        const isMet = currentMinsScheduled >= anc.mins;
+
+        const badge = document.createElement('div');
+        badge.className = `px-3 py-1.5 rounded-lg border text-xs flex items-center gap-2 ${isMet ? 'bg-palette-emerald-bg border-palette-emerald-border text-palette-emerald-text' : 'bg-canvas border-border text-ink'}`;
+        badge.innerHTML = `
+          <span class="font-bold">${anc.name}</span>
+          <span class="text-[10px] opacity-75">(${currentMinsScheduled}/${anc.mins}m)</span>
+        `;
+        container.appendChild(badge);
+      });
+
+      document.getElementById('anchorSummaryText').innerText = `${(scheduledMins / 60).toFixed(1)} / ${(totalMins / 60).toFixed(1)} Hours Scheduled`;
+    }
+
+    function openManageAnchorsModal() {
+      renderAnchorsList();
+      document.getElementById('anchorsModal').classList.remove('hidden');
+    }
+
+    function closeManageAnchorsModal() {
+      document.getElementById('anchorsModal').classList.add('hidden');
+    }
+
+    function renderAnchorsList() {
+      const container = document.getElementById('anchorListContainer');
+      container.innerHTML = '';
+      appState.anchors.forEach((anc, idx) => {
+        const item = document.createElement('div');
+        item.className = 'flex justify-between items-center p-2 rounded bg-canvas border border-border text-xs';
+        item.innerHTML = `
+          <div><span class="font-bold">${anc.name}</span> <span class="text-inkMuted">(${anc.mins}m)</span></div>
+          <button onclick="removeAnchor(${idx})" class="text-pinkAccent font-bold hover:underline">Remove</button>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function addCustomAnchor() {
+      const name = document.getElementById('newAnchorName').value.trim();
+      const mins = parseInt(document.getElementById('newAnchorMins').value, 10) || 60;
+      if (!name) return;
+      appState.anchors.push({ name, mins });
+      saveAppState();
+      document.getElementById('newAnchorName').value = '';
+      renderAnchorsList();
+      renderAnchors();
+    }
+
+    function removeAnchor(idx) {
+      appState.anchors.splice(idx, 1);
+      saveAppState();
+      renderAnchorsList();
+      renderAnchors();
+    }
+
+    // STAMPS / PRESETS PALETTE
+    function renderStampsPalette() {
+      const container = document.getElementById('stampsPalette');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (appState.stamps.length === 0) {
+        container.innerHTML = `<span class="text-xs text-inkMuted italic">No quick stamps defined. Click '+ Manage Stamps' to set up custom presets.</span>`;
+        return;
+      }
+
+      appState.stamps.forEach((st, idx) => {
+        const preset = PALETTE_COLORS.find(p => p.id === st.color) || PALETTE_COLORS[0];
+        const btn = document.createElement('button');
+        btn.className = `px-3 py-1.5 rounded-lg border text-xs font-bold transition-all ${preset.bg} ${preset.border} ${preset.text} ${activeStamp === idx ? 'ring-2 ring-ink scale-105' : ''}`;
+        btn.innerText = `${st.name} (${st.mins}m)`;
+        btn.onclick = () => selectStamp(idx);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectStamp(idx) {
+      activeStamp = (activeStamp === idx) ? null : idx;
+      renderStampsPalette();
+    }
+
+    function openManageStampsModal() {
+      renderStampsList();
+      document.getElementById('stampsModal').classList.remove('hidden');
+    }
+
+    function closeManageStampsModal() {
+      document.getElementById('stampsModal').classList.add('hidden');
+    }
+
+    function renderStampsList() {
+      const container = document.getElementById('stampsListContainer');
+      container.innerHTML = '';
+      appState.stamps.forEach((st, idx) => {
+        const preset = PALETTE_COLORS.find(p => p.id === st.color) || PALETTE_COLORS[0];
+        const item = document.createElement('div');
+        item.className = `flex justify-between items-center p-2 rounded border ${preset.bg} ${preset.border} text-xs`;
+        item.innerHTML = `
+          <div><span class="font-bold ${preset.text}">${st.name}</span> <span class="text-inkMuted">(${st.mins}m)</span></div>
+          <button onclick="removeStamp(${idx})" class="text-pinkAccent font-bold hover:underline">Remove</button>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function addCustomStamp() {
+      const name = document.getElementById('newStampName').value.trim();
+      const mins = parseInt(document.getElementById('newStampMins').value, 10) || 60;
+      const color = document.getElementById('newStampColor').value;
+      if (!name) return;
+      appState.stamps.push({ name, mins, color });
+      saveAppState();
+      document.getElementById('newStampName').value = '';
+      renderStampsList();
+      renderStampsPalette();
+    }
+
+    function removeStamp(idx) {
+      appState.stamps.splice(idx, 1);
+      if (activeStamp === idx) activeStamp = null;
+      saveAppState();
+      renderStampsList();
+      renderStampsPalette();
+    }
+
+    // TIME VIEW
+    function switchTimeSubView(sub) {
+      appState.timeSubView = sub;
+      saveAppState();
+      ['Day', 'Week', 'Month'].forEach(s => {
+        const btn = document.getElementById(`timeSubBtn${s}`);
+        const view = document.getElementById(`timeSubView${s}`);
+        if (s === sub) {
+          btn.className = 'px-3 py-1.5 text-xs font-semibold rounded bg-card text-ink border border-border';
+          view.classList.remove('hidden');
+        } else {
+          btn.className = 'px-3 py-1.5 text-xs font-semibold rounded text-inkMuted hover:text-ink';
+          view.classList.add('hidden');
+        }
+      });
+      renderTimeView();
+    }
+
+    function renderTimeView() {
+      if (appState.timeSubView === 'Day') renderTimeDay();
+      if (appState.timeSubView === 'Week') renderTimeWeek();
+      if (appState.timeSubView === 'Month') renderTimeMonth();
+    }
+
+    function renderTimeDay() {
+      const curDate = parseISODate(appState.selectedDate);
+      document.getElementById('timeDayLabel').innerText = formatAussieDate(curDate, true);
+
+      const now = new Date();
+      const isToday = (appState.selectedDate === toISODate(now));
+      const currentMin = now.getHours() * 60 + now.getMinutes();
+
+      const daySchedule = appState.schedules[appState.selectedDate] || {};
+
+      let currentSlotKey = "09:00";
+      for (let h = 0; h < 24; h++) {
+        for (let m = 0; m < 60; m += 15) {
+          const slotStart = h * 60 + m;
+          if (isToday && currentMin >= slotStart && currentMin < slotStart + 15) {
+            currentSlotKey = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+          }
+        }
+      }
+
+      const currentItem = daySchedule[currentSlotKey];
+      document.getElementById('timeCurrentSlotTime').innerText = parse12HourLabel(currentSlotKey);
+      document.getElementById('timeCurrentSlotText').innerText = currentItem ? currentItem.text : 'Unassigned';
+
+      const [curH, curM] = currentSlotKey.split(':').map(Number);
+      let nextM = curM + 15;
+      let nextH = curH;
+      if (nextM >= 60) { nextM = 0; nextH = (nextH + 1) % 24; }
+      const nextSlotKey = `${String(nextH).padStart(2, '0')}:${String(nextM).padStart(2, '0')}`;
+
+      const nextItem = daySchedule[nextSlotKey];
+      document.getElementById('timeNextSlotText').innerText = nextItem ? `${parse12HourLabel(nextSlotKey)} - ${nextItem.text}` : `${parse12HourLabel(nextSlotKey)} - Unassigned`;
+
+      const container = document.getElementById('timeScheduleContainer');
+      container.innerHTML = '';
+
+      const startHour = appState.showTimeEarlier ? 0 : (isToday ? Math.floor(currentMin / 60) : 0);
+
+      for (let h = startHour; h < 24; h++) {
+        for (let m = 0; m < 60; m += 15) {
+          const time24 = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+          const time12 = format12Hour(h, m);
+          const item = daySchedule[time24];
+
+          const isCurrent = isToday && (h * 60 + m <= currentMin && currentMin < h * 60 + m + 15);
+          const preset = item ? (PALETTE_COLORS.find(p => p.id === item.color) || PALETTE_COLORS[0]) : null;
+
+          const row = document.createElement('div');
+          row.className = `flex items-center justify-between p-3 rounded-lg border text-xs ${isCurrent ? 'ring-2 ring-pinkAccent border-pinkAccent bg-pinkAccent-light/20' : (item ? preset.bg + ' ' + preset.border : 'bg-card border-border')}`;
+
+          row.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="font-bold text-inkMuted w-20 text-center">${time12}</span>
+              ${preset ? `<div class="w-2.5 h-2.5 rounded-full" style="background-color: ${preset.dot}"></div>` : '<div class="w-2.5 h-2.5 rounded-full bg-border"></div>'}
+              <span class="${item ? 'font-bold ' + preset.text : 'text-inkLight font-normal'}">${item ? item.text : 'Unassigned'}</span>
+            </div>
+            ${isCurrent ? '<span class="text-[10px] font-extrabold text-pinkAccent border border-pinkAccent px-2 py-0.5 rounded bg-white">ACTIVE</span>' : ''}
+          `;
+          container.appendChild(row);
+        }
+      }
+    }
+
+    function toggleTimeEarlier() {
+      appState.showTimeEarlier = !appState.showTimeEarlier;
+      saveAppState();
+      document.getElementById('timeEarlierBtn').innerText = appState.showTimeEarlier ? 'HIDE PAST' : 'EARLIER';
+      renderTimeDay();
+    }
+
+    function changeTimeDay(offset) {
+      const cur = parseISODate(appState.selectedDate);
+      cur.setDate(cur.getDate() + offset);
+      appState.selectedDate = toISODate(cur);
+      saveAppState();
+      renderTimeView();
+      if (appState.mainTab === 'BUILD') renderBuildView();
+      renderAnchors();
+    }
+
+    function renderTimeWeek() {
+      const grid = document.getElementById('timeWeekGrid');
+      grid.innerHTML = '';
+
+      const cur = parseISODate(appState.selectedDate);
+      const dayOfWeek = (cur.getDay() + 6) % 7;
+      const startOfWeek = new Date(cur);
+      startOfWeek.setDate(cur.getDate() - dayOfWeek);
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+      document.getElementById('timeWeekLabel').innerText = `${formatAussieDate(startOfWeek, false)} - ${formatAussieDate(endOfWeek)}`;
+
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(startOfWeek);
+        d.setDate(startOfWeek.getDate() + i);
+        const isoKey = toISODate(d);
+        const daySchedule = appState.schedules[isoKey] || {};
+
+        const col = document.createElement('div');
+        col.className = 'bg-card p-3 flex flex-col space-y-2 min-h-[220px]';
+
+        let slotKeys = Object.keys(daySchedule).sort();
+        let itemsHtml = slotKeys.map(k => {
+          const item = daySchedule[k];
+          const preset = PALETTE_COLORS.find(p => p.id === item.color) || PALETTE_COLORS[0];
+          return `<div class="p-1.5 rounded border ${preset.bg} ${preset.border} text-[10px]"><span class="font-bold ${preset.text}">${parse12HourLabel(k)}: ${item.text}</span></div>`;
+        }).join('');
+
+        col.innerHTML = `
+          <div class="border-b border-border pb-1.5 flex justify-between items-center">
+            <span class="text-xs font-bold text-ink uppercase">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]}</span>
+            <span class="text-[10px] text-inkMuted font-bold">${formatAussieDate(d, false)}</span>
+          </div>
+          <div class="flex-1 space-y-1.5 overflow-y-auto custom-scrollbar">
+            ${itemsHtml || '<span class="text-[10px] text-inkLight italic">No slots</span>'}
+          </div>
+        `;
+        grid.appendChild(col);
+      }
+    }
+
+    function changeTimeWeek(offset) {
+      const cur = parseISODate(appState.selectedDate);
+      cur.setDate(cur.getDate() + (offset * 7));
+      appState.selectedDate = toISODate(cur);
+      saveAppState();
+      renderTimeView();
+    }
+
+    function resetTimeWeekToday() {
+      appState.selectedDate = toISODate(new Date());
+      saveAppState();
+      renderTimeView();
+    }
+
+    function renderTimeMonth() {
+      const grid = document.getElementById('timeMonthGrid');
+      grid.innerHTML = '';
+      const cur = parseISODate(appState.selectedDate);
+      const year = cur.getFullYear();
+      const month = cur.getMonth();
+
+      document.getElementById('timeMonthLabel').innerText = cur.toLocaleDateString('en-AU', { month: 'long', year: 'numeric' }).toUpperCase();
+
+      const firstDay = new Date(year, month, 1);
+      const startingDay = (firstDay.getDay() + 6) % 7;
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < startingDay; i++) grid.appendChild(document.createElement('div'));
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const d = new Date(year, month, day);
+        const isoKey = toISODate(d);
+        const daySchedule = appState.schedules[isoKey] || {};
+        const count = Object.keys(daySchedule).length;
+
+        const cell = document.createElement('div');
+        cell.className = `p-2 min-h-[75px] flex flex-col justify-between bg-card`;
+        cell.innerHTML = `
+          <span class="text-xs font-bold text-ink">${day}</span>
+          ${count > 0 ? `<div class="text-[10px] text-pinkAccent font-bold">${count} slots</div>` : ''}
+        `;
+        grid.appendChild(cell);
+      }
+    }
+
+    function changeTimeMonth(offset) {
+      const cur = parseISODate(appState.selectedDate);
+      cur.setMonth(cur.getMonth() + offset);
+      appState.selectedDate = toISODate(cur);
+      saveAppState();
+      renderTimeView();
+    }
+
+    // BUILD VIEW
+    function switchBuildSubView(sub) {
+      appState.buildSubView = sub;
+      saveAppState();
+      ['Day', 'Week', 'Month'].forEach(s => {
+        const btn = document.getElementById(`buildSubBtn${s}`);
+        const view = document.getElementById(`buildSubView${s}`);
+        if (s === sub) {
+          btn.className = 'px-3 py-1.5 text-xs font-semibold rounded bg-card text-ink border border-border';
+          view.classList.remove('hidden');
+        } else {
+          btn.className = 'px-3 py-1.5 text-xs font-semibold rounded text-inkMuted hover:text-ink';
+          view.classList.add('hidden');
+        }
+      });
+      renderBuildView();
+    }
+
+    function renderBuildView() {
+      if (appState.buildSubView === 'Day') renderBuildDayEditor();
+      if (appState.buildSubView === 'Week') renderTimeWeek();
+      if (appState.buildSubView === 'Month') renderTimeMonth();
+      renderStampsPalette();
+    }
+
+    function onBuildDateChange() {
+      const picker = document.getElementById('buildDatePicker');
+      if (picker && picker.value) {
+        appState.selectedDate = picker.value;
+        saveAppState();
+        renderBuildDayEditor();
+        renderTimeView();
+        renderAnchors();
+      }
+    }
+
+    function changeBuildDay(offset) {
+      const cur = parseISODate(appState.selectedDate);
+      cur.setDate(cur.getDate() + offset);
+      appState.selectedDate = toISODate(cur);
+      saveAppState();
+      const picker = document.getElementById('buildDatePicker');
+      if (picker) picker.value = appState.selectedDate;
+      renderBuildDayEditor();
+      renderTimeView();
+      renderAnchors();
+    }
+
+    function renderBuildDayEditor() {
+      const curDate = parseISODate(appState.selectedDate);
+      document.getElementById('buildDayFormattedLabel').innerText = formatAussieDate(curDate, true);
+      const picker = document.getElementById('buildDatePicker');
+      if (picker) picker.value = appState.selectedDate;
+
+      const container = document.getElementById('buildScheduleContainer');
+      container.innerHTML = '';
+      const daySchedule = appState.schedules[appState.selectedDate] || {};
+
+      for (let h = 0; h < 24; h++) {
+        for (let m = 0; m < 60; m += 15) {
+          const time24Str = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+          const time12Str = format12Hour(h, m);
+          const slotData = daySchedule[time24Str] || { text: '', color: 'slate' };
+          const preset = PALETTE_COLORS.find(p => p.id === slotData.color) || PALETTE_COLORS[0];
+
+          const row = document.createElement('div');
+          row.className = `flex items-center justify-between p-2.5 rounded-lg border text-xs cursor-pointer transition-all hover:scale-[1.001] ${slotData.text ? preset.bg + ' ' + preset.border : 'bg-canvas/40 border-border/70 hover:bg-card'}`;
+
+          row.onclick = (e) => {
+            if (e.target.tagName === 'BUTTON') return;
+            if (activeStamp !== null && appState.stamps[activeStamp]) {
+              applyStampToSlot(time24Str, appState.stamps[activeStamp]);
+            } else {
+              openSlotEditModal(time24Str);
+            }
+          };
+
+          row.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="font-bold text-inkMuted w-20 text-center">${time12Str}</span>
+              <div class="w-2.5 h-2.5 rounded-full" style="background-color: ${preset.dot}"></div>
+              <span class="${slotData.text ? 'font-semibold ' + preset.text : 'text-inkLight italic'}">
+                ${slotData.text || 'Unassigned block'}
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              ${slotData.text ? `
+                <button onclick="adjustSlotDuration('${time24Str}', -15)" class="px-2 py-0.5 bg-card border border-border rounded font-bold text-[10px]">-15m</button>
+                <button onclick="adjustSlotDuration('${time24Str}', 15)" class="px-2 py-0.5 bg-card border border-border rounded font-bold text-[10px]">+15m</button>
+              ` : ''}
+              <span class="text-[10px] font-bold text-inkMuted hover:text-ink">EDIT &rarr;</span>
+            </div>
+          `;
+          container.appendChild(row);
+        }
+      }
+    }
+
+    function applyStampToSlot(startTimeKey, stamp) {
+      if (!appState.schedules[appState.selectedDate]) appState.schedules[appState.selectedDate] = {};
+      const targetStore = appState.schedules[appState.selectedDate];
+
+      const [h, m] = startTimeKey.split(':').map(Number);
+      const startMin = h * 60 + m;
+      const endMin = startMin + stamp.mins;
+
+      for (let min = startMin; min < endMin; min += 15) {
+        if (min >= 24 * 60) break;
+        const curH = Math.floor(min / 60);
+        const curM = min % 60;
+        const key = `${String(curH).padStart(2, '0')}:${String(curM).padStart(2, '0')}`;
+        targetStore[key] = { text: stamp.name, color: stamp.color };
+      }
+
+      saveAppState();
+      renderBuildDayEditor();
+      renderTimeView();
+      renderAnchors();
+    }
+
+    function adjustSlotDuration(timeKey, deltaMins) {
+      if (!appState.schedules[appState.selectedDate]) return;
+      const targetStore = appState.schedules[appState.selectedDate];
+      const slot = targetStore[timeKey];
+      if (!slot) return;
+
+      const [h, m] = timeKey.split(':').map(Number);
+      const startMin = h * 60 + m;
+
+      if (deltaMins < 0) {
+        delete targetStore[timeKey];
+      } else {
+        const nextMin = startMin + 15;
+        if (nextMin < 24 * 60) {
+          const nextKey = `${String(Math.floor(nextMin / 60)).padStart(2, '0')}:${String(nextMin % 60).padStart(2, '0')}`;
+          targetStore[nextKey] = { text: slot.text, color: slot.color };
+        }
+      }
+
+      saveAppState();
+      renderBuildDayEditor();
+      renderTimeView();
+      renderAnchors();
+    }
+
+    function copyScheduleToOtherDays() {
+      const curSchedule = appState.schedules[appState.selectedDate];
+      if (!curSchedule || Object.keys(curSchedule).length === 0) {
+        alert("Current day has no schedule to copy.");
+        return;
+      }
+      const targetIso = prompt("Enter target date (YYYY-MM-DD) to copy schedule to:");
+      if (!targetIso) return;
+      appState.schedules[targetIso] = JSON.parse(JSON.stringify(curSchedule));
+      saveAppState();
+      alert(`Schedule copied to ${targetIso}`);
+    }
+
+    // MODAL EDITING
+    function openSlotEditModal(timeKey) {
+      activeClickedSlotKey = timeKey;
+      const isTemplateMode = (appState.mainTab === 'TEMPLATE');
+      const store = isTemplateMode ? appState.dayTemplates[appState.templateDay] : appState.schedules[appState.selectedDate];
+      const slotData = (store && store[timeKey]) ? store[timeKey] : { text: '', color: 'slate' };
+
+      document.getElementById('multiTitle').value = slotData.text || '';
+      document.getElementById('multiStartTime').value = timeKey;
+
+      const [h, m] = timeKey.split(':').map(Number);
+      let endM = m + 15;
+      let endH = h;
+      if (endM >= 60) { endM = 0; endH = (endH + 1) % 24; }
+      document.getElementById('multiEndTime').value = `${String(endH).padStart(2, '0')}:${String(endM).padStart(2, '0')}`;
+
+      document.getElementById('multiBlockStartTimeLabel').innerText = `Start: ${parse12HourLabel(timeKey)}`;
+      selectMultiColorSwatch(slotData.color || 'slate');
+      document.getElementById('multiBlockModal').classList.remove('hidden');
+    }
+
+    function closeMultiBlockModal() {
+      document.getElementById('multiBlockModal').classList.add('hidden');
+    }
+
+    function populateMultiSelectOptions() {
+      const startSelect = document.getElementById('multiStartTime');
+      const endSelect = document.getElementById('multiEndTime');
+      startSelect.innerHTML = '';
+      endSelect.innerHTML = '';
+
+      for (let h = 0; h < 24; h++) {
+        for (let m = 0; m < 60; m += 15) {
+          const time24 = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+          const time12 = format12Hour(h, m);
+          startSelect.appendChild(new Option(time12, time24));
+          endSelect.appendChild(new Option(time12, time24));
+        }
+      }
+      endSelect.appendChild(new Option("12:00 AM (Next Day)", "24:00"));
+    }
+
+    function setPresetDuration(minutes) {
+      const startStr = document.getElementById('multiStartTime').value;
+      const [h, m] = startStr.split(':').map(Number);
+      const totalMin = h * 60 + m + minutes;
+      const endH = Math.floor(totalMin / 60);
+      const endM = totalMin % 60;
+
+      let endKey = `${String(endH % 24).padStart(2, '0')}:${String(endM).padStart(2, '0')}`;
+      if (endH >= 24) endKey = "24:00";
+      document.getElementById('multiEndTime').value = endKey;
+    }
+
+    function clearSingleBlock() {
+      const startStr = document.getElementById('multiStartTime').value;
+      const isTemplateMode = (appState.mainTab === 'TEMPLATE');
+      const store = isTemplateMode ? appState.dayTemplates[appState.templateDay] : appState.schedules[appState.selectedDate];
+      if (store && store[startStr]) {
+        delete store[startStr];
+        saveAppState();
+      }
+      closeMultiBlockModal();
+      if (isTemplateMode) renderTemplateView(); else { renderBuildDayEditor(); renderTimeView(); renderAnchors(); }
+    }
+
+    function saveMultiBlockRange() {
+      const title = document.getElementById('multiTitle').value.trim();
+      const startStr = document.getElementById('multiStartTime').value;
+      const endStr = document.getElementById('multiEndTime').value;
+      const color = document.getElementById('multiColorVal').value;
+
+      const parseMinutes = (str) => {
+        if (str === "24:00") return 24 * 60;
+        const [h, m] = str.split(':').map(Number);
+        return h * 60 + m;
+      };
+
+      const startMin = parseMinutes(startStr);
+      let endMin = parseMinutes(endStr);
+      if (endMin <= startMin) endMin += 24 * 60;
+
+      const isTemplateMode = (appState.mainTab === 'TEMPLATE');
+      let targetStore;
+
+      if (isTemplateMode) {
+        if (!appState.dayTemplates[appState.templateDay]) appState.dayTemplates[appState.templateDay] = {};
+        targetStore = appState.dayTemplates[appState.templateDay];
+      } else {
+        if (!appState.schedules[appState.selectedDate]) appState.schedules[appState.selectedDate] = {};
+        targetStore = appState.schedules[appState.selectedDate];
+      }
+
+      for (let min = startMin; min < endMin; min += 15) {
+        const currentTotalMin = min % (24 * 60);
+        const h = Math.floor(currentTotalMin / 60);
+        const m = currentTotalMin % 60;
+        const timeKey = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+
+        if (title) targetStore[timeKey] = { text: title, color };
+        else delete targetStore[timeKey];
+      }
+
+      saveAppState();
+      closeMultiBlockModal();
+
+      if (isTemplateMode) renderTemplateView();
+      else { renderBuildDayEditor(); renderTimeView(); renderAnchors(); }
+    }
+
+    function initSwatches() {
+      const boxes = [
+        { id: 'multiColorSwatches', valId: 'multiColorVal', prefix: 'swatch_multi_' },
+        { id: 'stampColorSwatches', valId: 'newStampColor', prefix: 'swatch_stamp_' }
+      ];
+
+      boxes.forEach(boxObj => {
+        const box = document.getElementById(boxObj.id);
+        if (!box) return;
+        box.innerHTML = '';
+        PALETTE_COLORS.forEach(p => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `h-8 rounded-lg border ${p.bg} ${p.border} flex items-center justify-center font-bold text-[10px] ${p.text}`;
+          btn.innerText = p.name.split(' ')[0];
+          btn.onclick = () => {
+            document.getElementById(boxObj.valId).value = p.id;
+          };
+          box.appendChild(btn);
+        });
+      });
+    }
+
+    function selectMultiColorSwatch(colorId) {
+      document.getElementById('multiColorVal').value = colorId;
+    }
+
+    // TEMPLATE VIEW
+    function switchTemplateDay(dayName) {
+      appState.templateDay = dayName;
+      saveAppState();
+      renderTemplateView();
+    }
+
+    function renderTemplateView() {
+      ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].forEach(d => {
+        const btn = document.getElementById(`templateBtn${d}`);
+        if (btn) btn.className = (d === appState.templateDay) ? 'px-3 py-1.5 text-xs font-semibold rounded bg-card text-ink shadow-2xs border border-border' : 'px-3 py-1.5 text-xs font-semibold rounded text-inkMuted hover:text-ink';
+      });
+
+      document.getElementById('templateDayHeader').innerText = `${appState.templateDay} Template`;
+      const container = document.getElementById('templateScheduleContainer');
+      container.innerHTML = '';
+
+      const templateData = (appState.dayTemplates && appState.dayTemplates[appState.templateDay]) || {};
+
+      for (let h = 0; h < 24; h++) {
+        for (let m = 0; m < 60; m += 15) {
+          const time24Str = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+          const time12Str = format12Hour(h, m);
+          const slotData = templateData[time24Str] || { text: '', color: 'slate' };
+          const preset = PALETTE_COLORS.find(p => p.id === slotData.color) || PALETTE_COLORS[0];
+
+          const row = document.createElement('div');
+          row.className = `flex items-center justify-between p-2.5 rounded-lg border text-xs cursor-pointer ${slotData.text ? preset.bg + ' ' + preset.border : 'bg-canvas/40 border-border/70 hover:bg-card'}`;
+          row.setAttribute('onclick', `openSlotEditModal('${time24Str}')`);
+
+          row.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="font-bold text-inkMuted w-20 text-center">${time12Str}</span>
+              <div class="w-2.5 h-2.5 rounded-full" style="background-color: ${preset.dot}"></div>
+              <span class="${slotData.text ? 'font-semibold ' + preset.text : 'text-inkLight italic'}">${slotData.text || 'Unassigned template block'}</span>
+            </div>
+            <span class="text-[10px] font-bold text-inkMuted hover:text-ink">EDIT &rarr;</span>
+          `;
+          container.appendChild(row);
+        }
+      }
+    }
+
+    function clearCurrentTemplateDay() {
+      if (appState.dayTemplates && appState.dayTemplates[appState.templateDay]) {
+        appState.dayTemplates[appState.templateDay] = {};
+        saveAppState();
+        renderTemplateView();
+      }
+    }
+
+    function applyDayTemplateToCurrentBuild() {
+      const curDate = parseISODate(appState.selectedDate);
+      const dayIndex = (curDate.getDay() + 6) % 7;
+      const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      const targetDayName = dayNames[dayIndex];
+      const templateData = (appState.dayTemplates && appState.dayTemplates[targetDayName]) || {};
+
+      if (Object.keys(templateData).length === 0) {
+        alert(`No template defined for ${targetDayName}.`);
+        return;
+      }
+
+      appState.schedules[appState.selectedDate] = JSON.parse(JSON.stringify(templateData));
+      saveAppState();
+      renderBuildDayEditor();
+      renderTimeView();
+      renderAnchors();
+    }
+
+    // GOAL VIEW
+    function switchGoalSubView(sub) {
+      appState.goalSubView = sub;
+      saveAppState();
+      ['Day', 'Week', 'Month'].forEach(s => {
+        const btn = document.getElementById(`goalSubBtn${s}`);
+        if (btn) btn.className = (s === sub) ? 'px-3 py-1.5 text-xs font-semibold rounded bg-card text-ink shadow-2xs border border-border' : 'px-3 py-1.5 text-xs font-semibold rounded text-inkMuted hover:text-ink';
+      });
+      renderGoalView();
+    }
+
+    function renderGoalView() {
+      const type = appState.goalSubView;
+      document.getElementById('goalViewTitle').innerText = `${type} Active Goals`;
+
+      const list = appState.goals[type] || [];
+      const container = document.getElementById('activeGoalsContainer');
+      container.innerHTML = '';
+
+      if (list.length === 0) {
+        container.innerHTML = `<div class="text-center py-8 text-xs text-inkMuted italic">No active goals set for this view.</div>`;
+      } else {
+        list.forEach((g, idx) => {
+          const pct = Math.round((g.current / g.target) * 100);
+          const card = document.createElement('div');
+          card.className = 'bg-canvas/50 p-4 rounded-xl border border-border space-y-3';
+          card.innerHTML = `
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="font-bold text-ink text-xs">${g.title}</h4>
+                <span class="text-[11px] text-inkMuted font-semibold">${g.current} / ${g.target} ${g.unit} (${pct}%)</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="adjustGoalProgress('${type}', ${idx}, -1)" class="px-2 py-1 bg-card border border-border hover:bg-canvas rounded text-xs font-bold">-</button>
+                <button onclick="adjustGoalProgress('${type}', ${idx}, 1)" class="px-2 py-1 bg-card border border-border hover:bg-canvas rounded text-xs font-bold">+</button>
+                <button onclick="removeGoal('${type}', ${idx})" class="px-2 py-1 bg-card border border-border hover:bg-canvas rounded text-xs font-bold text-pinkAccent">Remove</button>
+              </div>
+            </div>
+            <div class="w-full bg-border/60 h-2 rounded-full overflow-hidden">
+              <div class="h-full bg-pinkAccent" style="width: ${Math.min(pct, 100)}%"></div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+    }
+
+    function adjustGoalProgress(type, idx, dir) {
+      const g = appState.goals[type][idx];
+      if (g) {
+        g.current = Math.max(0, g.current + dir);
+        saveAppState();
+        renderGoalView();
+      }
+    }
+
+    function removeGoal(type, idx) {
+      appState.goals[type].splice(idx, 1);
+      saveAppState();
+      renderGoalView();
+    }
+
+    function openAddGoalModal() {
+      document.getElementById('addGoalModal').classList.remove('hidden');
+    }
+
+    function closeAddGoalModal() {
+      document.getElementById('addGoalModal').classList.add('hidden');
+    }
+
+    function saveNewGoal() {
+      const title = document.getElementById('goalInputTitle').value.trim();
+      const target = parseFloat(document.getElementById('goalInputTarget').value) || 10;
+      const unit = document.getElementById('goalInputUnit').value.trim() || 'units';
+      const notes = document.getElementById('goalInputNotes').value.trim();
+
+      if (!title) return;
+
+      const type = appState.goalSubView;
+      if (!appState.goals[type]) appState.goals[type] = [];
+      appState.goals[type].push({ id: 'g_' + Date.now(), title, current: 0, target, unit, notes });
+      saveAppState();
+
+      document.getElementById('goalInputTitle').value = '';
+      closeAddGoalModal();
+      renderGoalView();
+    }
+
+    function toggleLongTermDrawer(open) {
+      const drawer = document.getElementById('longTermDrawer');
+      const backdrop = document.getElementById('longTermDrawerBackdrop');
+      if (open) {
+        backdrop.classList.remove('hidden');
+        drawer.classList.remove('translate-x-full');
+      } else {
+        drawer.classList.add('translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+</html>
