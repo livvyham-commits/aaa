@@ -54,11 +54,12 @@
       background-color: #FBFBFB;
       color: #09090B;
       font-family: 'Plus Jakarta Sans', sans-serif;
+      touch-action: manipulation;
     }
     
     .custom-scrollbar::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
+      width: 4px;
+      height: 4px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
       background: #FBFBFB;
@@ -82,32 +83,32 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col antialiased selection:bg-pinkAccent-light">
 
   <!-- HEADER -->
   <header class="border-b border-border bg-card/90 backdrop-blur-md sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
       <div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-ink uppercase">
+        <h1 class="text-xl sm:text-3xl font-extrabold tracking-tight text-ink uppercase">
           THE TIME
         </h1>
-        <p class="text-[11px] font-semibold tracking-wider text-inkMuted uppercase mt-0.5" id="headerDateStr">
+        <p class="text-[10px] sm:text-[11px] font-semibold tracking-wider text-inkMuted uppercase mt-0.5" id="headerDateStr">
           --/--/----
         </p>
       </div>
 
       <!-- MAIN TABS -->
       <nav class="flex space-x-1 bg-canvas p-1 rounded-xl border border-border">
-        <button onclick="switchMainTab('TIME')" id="tabBtnTIME" class="px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
+        <button onclick="switchMainTab('TIME')" id="tabBtnTIME" class="px-3 sm:px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
           TIME
         </button>
-        <button onclick="switchMainTab('BUILD')" id="tabBtnBUILD" class="px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
+        <button onclick="switchMainTab('BUILD')" id="tabBtnBUILD" class="px-3 sm:px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
           BUILD
         </button>
-        <button onclick="switchMainTab('TEMPLATE')" id="tabBtnTEMPLATE" class="px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
+        <button onclick="switchMainTab('TEMPLATE')" id="tabBtnTEMPLATE" class="px-3 sm:px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
           TEMPLATE
         </button>
-        <button onclick="switchMainTab('GOAL')" id="tabBtnGOAL" class="px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
+        <button onclick="switchMainTab('GOAL')" id="tabBtnGOAL" class="px-3 sm:px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all">
           GOAL
         </button>
       </nav>
@@ -115,15 +116,15 @@
   </header>
 
   <!-- MAIN CONTAINER -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4">
 
-    <!-- DAILY ANCHORS / COMMITMENT SHELF -->
-    <section class="mb-6 bg-card p-4 rounded-xl border border-border space-y-3">
+    <!-- DAILY ANCHORS SHELF -->
+    <section class="bg-card p-3.5 sm:p-4 rounded-xl border border-border space-y-2.5">
       <div class="flex items-center justify-between">
         <h2 class="text-xs font-bold uppercase tracking-wider text-inkMuted">Daily Anchors</h2>
         <div class="flex items-center gap-3 text-xs font-medium text-inkMuted">
-          <span id="anchorSummaryText">0 / 0 Hours Scheduled</span>
-          <button onclick="openManageAnchorsModal()" class="text-xs text-ink font-bold hover:underline">+ Manage Anchors</button>
+          <span id="anchorSummaryText" class="text-[11px] font-semibold">0 / 0 Hours Scheduled</span>
+          <button onclick="openManageAnchorsModal()" class="text-xs text-ink font-bold hover:underline">+ Manage</button>
         </div>
       </div>
       
@@ -133,8 +134,8 @@
     </section>
 
     <!-- TAB 1: TIME -->
-    <section id="viewTIME" class="tab-content space-y-6">
-      <div class="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-xl border border-border">
+    <section id="viewTIME" class="tab-content space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-card p-3 sm:p-4 rounded-xl border border-border">
         <span class="text-xs font-bold uppercase tracking-wider text-inkMuted">Schedule View</span>
         <div class="flex items-center gap-1 bg-canvas p-1 rounded-lg border border-border">
           <button onclick="switchTimeSubView('Day')" id="timeSubBtnDay" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Day</button>
@@ -145,11 +146,11 @@
 
       <!-- TIME DAY -->
       <div id="timeSubViewDay" class="space-y-4">
-        <div class="bg-card p-6 rounded-xl border border-border text-center max-w-2xl mx-auto space-y-3 shadow-2xs">
-          <div class="text-[11px] font-bold tracking-widest uppercase text-inkMuted">NOW</div>
-          <div class="border-b border-border pb-4 flex flex-col items-center justify-center gap-1">
-            <span class="text-2xl font-black text-pinkAccent tracking-tight" id="timeCurrentSlotTime">--:-- --</span>
-            <span class="text-base font-bold text-ink" id="timeCurrentSlotText">No activity scheduled</span>
+        <div class="bg-card p-4 sm:p-6 rounded-xl border border-border text-center max-w-2xl mx-auto space-y-2 shadow-2xs">
+          <div class="text-[10px] sm:text-[11px] font-bold tracking-widest uppercase text-inkMuted">NOW</div>
+          <div class="border-b border-border pb-3 flex flex-col items-center justify-center gap-1">
+            <span class="text-2xl sm:text-3xl font-black text-pinkAccent tracking-tight" id="timeCurrentSlotTime">--:-- --</span>
+            <span class="text-sm sm:text-base font-bold text-ink" id="timeCurrentSlotText">No activity scheduled</span>
           </div>
           <div class="flex items-center justify-center gap-2 text-xs text-inkMuted pt-1">
             <span class="font-bold uppercase tracking-wider text-[10px]">NEXT:</span>
@@ -157,30 +158,30 @@
           </div>
         </div>
 
-        <div class="flex items-center justify-between bg-card p-3.5 rounded-xl border border-border">
-          <button onclick="toggleTimeEarlier()" id="timeEarlierBtn" class="px-3.5 py-1.5 bg-canvas hover:bg-border/50 text-ink text-xs font-bold rounded-lg border border-border transition-all">
+        <div class="flex items-center justify-between bg-card p-3 rounded-xl border border-border">
+          <button onclick="toggleTimeEarlier()" id="timeEarlierBtn" class="px-3 py-2 bg-canvas hover:bg-border/50 text-ink text-xs font-bold rounded-lg border border-border transition-all min-h-[38px]">
             EARLIER
           </button>
-          <div class="flex items-center gap-3">
-            <button onclick="changeTimeDay(-1)" class="w-8 h-8 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-ink text-xs font-bold">&larr;</button>
-            <span class="text-xs font-extrabold text-ink px-2 tracking-wider" id="timeDayLabel">--/--/----</span>
-            <button onclick="changeTimeDay(1)" class="w-8 h-8 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-xs font-bold">&rarr;</button>
+          <div class="flex items-center gap-2">
+            <button onclick="changeTimeDay(-1)" class="w-9 h-9 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-ink text-xs font-bold">&larr;</button>
+            <span class="text-xs font-extrabold text-ink px-1 tracking-wider" id="timeDayLabel">--/--/----</span>
+            <button onclick="changeTimeDay(1)" class="w-9 h-9 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-xs font-bold">&rarr;</button>
           </div>
         </div>
 
-        <div class="bg-card rounded-xl border border-border p-4 sm:p-5">
-          <div class="space-y-1.5 max-h-[600px] overflow-y-auto custom-scrollbar pr-2" id="timeScheduleContainer"></div>
+        <div class="bg-card rounded-xl border border-border p-3 sm:p-5">
+          <div class="space-y-1.5 max-h-[600px] overflow-y-auto custom-scrollbar pr-1" id="timeScheduleContainer"></div>
         </div>
       </div>
 
       <!-- TIME WEEK -->
       <div id="timeSubViewWeek" class="hidden space-y-4">
-        <div class="flex items-center justify-between bg-card p-4 rounded-xl border border-border">
+        <div class="flex items-center justify-between bg-card p-3 sm:p-4 rounded-xl border border-border">
           <div class="font-bold text-ink text-xs uppercase tracking-wider" id="timeWeekLabel">Week Overview</div>
-          <div class="flex items-center gap-2">
-            <button onclick="changeTimeWeek(-1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
-            <button onclick="resetTimeWeekToday()" class="px-3 py-1 bg-canvas hover:bg-border/50 text-ink text-xs font-bold rounded border border-border">TODAY</button>
-            <button onclick="changeTimeWeek(1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
+          <div class="flex items-center gap-1.5">
+            <button onclick="changeTimeWeek(-1)" class="px-2.5 py-1.5 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
+            <button onclick="resetTimeWeekToday()" class="px-3 py-1.5 bg-canvas hover:bg-border/50 text-ink text-xs font-bold rounded border border-border">TODAY</button>
+            <button onclick="changeTimeWeek(1)" class="px-2.5 py-1.5 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
           </div>
         </div>
 
@@ -191,14 +192,14 @@
 
       <!-- TIME MONTH -->
       <div id="timeSubViewMonth" class="hidden space-y-4">
-        <div class="flex items-center justify-between bg-card p-4 rounded-xl border border-border">
-          <button onclick="changeTimeMonth(-1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
+        <div class="flex items-center justify-between bg-card p-3 sm:p-4 rounded-xl border border-border">
+          <button onclick="changeTimeMonth(-1)" class="px-2.5 py-1.5 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
           <div class="font-bold text-ink text-xs uppercase tracking-wider" id="timeMonthLabel">MONTH YEAR</div>
-          <button onclick="changeTimeMonth(1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
+          <button onclick="changeTimeMonth(1)" class="px-2.5 py-1.5 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
         </div>
 
-        <div class="bg-card rounded-xl border border-border overflow-hidden p-4">
-          <div class="grid grid-cols-7 text-center text-[11px] font-bold uppercase text-inkMuted py-2 border-b border-border">
+        <div class="bg-card rounded-xl border border-border overflow-hidden p-3 sm:p-4">
+          <div class="grid grid-cols-7 text-center text-[10px] sm:text-[11px] font-bold uppercase text-inkMuted py-2 border-b border-border">
             <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
           </div>
           <div class="grid grid-cols-7 grid-lines mt-2" id="timeMonthGrid"></div>
@@ -207,8 +208,8 @@
     </section>
 
     <!-- TAB 2: BUILD -->
-    <section id="viewBUILD" class="tab-content hidden space-y-6">
-      <div class="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-xl border border-border">
+    <section id="viewBUILD" class="tab-content hidden space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-card p-3 sm:p-4 rounded-xl border border-border">
         <span class="text-xs font-bold uppercase tracking-wider text-inkMuted">Schedule Setup</span>
         <div class="flex items-center gap-1 bg-canvas p-1 rounded-lg border border-border">
           <button onclick="switchBuildSubView('Day')" id="buildSubBtnDay" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Day</button>
@@ -218,44 +219,43 @@
       </div>
 
       <!-- BUILD DAY -->
-      <div id="buildSubViewDay" class="space-y-4">
-        <!-- CUSTOM BLOCK STAMPS / PRESETS PALETTE -->
-        <div class="bg-card p-4 rounded-xl border border-border space-y-2">
+      <div id="buildSubViewDay" class="space-y-3">
+        <!-- QUICK TAP STAMPS / ANCHORS PALETTE -->
+        <div class="bg-card p-3 sm:p-4 rounded-xl border border-border space-y-2">
           <div class="flex justify-between items-center">
-            <span class="text-[11px] font-bold text-inkMuted uppercase tracking-wider">Quick Stamps</span>
-            <button onclick="openManageStampsModal()" class="text-xs text-ink font-bold hover:underline">+ Manage Stamps</button>
+            <span class="text-[10px] font-bold text-inkMuted uppercase tracking-wider">Tap to Select Anchor Stamp</span>
+            <span class="text-[10px] text-pinkAccent font-semibold" id="activeStampNotice">Tap an anchor then tap a slot</span>
           </div>
           <div id="stampsPalette" class="flex flex-wrap gap-2"></div>
         </div>
 
-        <div class="flex flex-wrap items-center justify-between gap-3 bg-card p-4 rounded-xl border border-border">
-          <div class="flex items-center gap-3">
-            <button onclick="changeBuildDay(-1)" class="w-8 h-8 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-ink text-xs font-bold">&larr;</button>
-            <input type="date" id="buildDatePicker" onchange="onBuildDateChange()" class="px-3 py-1.5 bg-canvas border border-border rounded-lg text-xs font-semibold text-ink focus:outline-none">
-            <button onclick="changeBuildDay(1)" class="w-8 h-8 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-ink text-xs font-bold">&rarr;</button>
-            <span id="buildDayFormattedLabel" class="text-xs font-bold text-ink">--/--/----</span>
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-card p-3 sm:p-4 rounded-xl border border-border">
+          <div class="flex items-center gap-2 sm:gap-3">
+            <button onclick="changeBuildDay(-1)" class="w-9 h-9 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-ink text-xs font-bold">&larr;</button>
+            <input type="date" id="buildDatePicker" onchange="onBuildDateChange()" class="px-2.5 py-1.5 bg-canvas border border-border rounded-lg text-xs font-semibold text-ink focus:outline-none min-h-[38px]">
+            <button onclick="changeBuildDay(1)" class="w-9 h-9 flex items-center justify-center hover:bg-canvas rounded-lg border border-border text-ink text-xs font-bold">&rarr;</button>
           </div>
           <div class="flex items-center gap-2">
-            <button onclick="copyScheduleToOtherDays()" class="px-3.5 py-1.5 bg-canvas hover:bg-border/50 text-ink text-xs font-bold rounded-lg border border-border transition-all">
-              COPY SCHEDULE
+            <button onclick="copyScheduleToOtherDays()" class="px-3 py-2 bg-canvas hover:bg-border/50 text-ink text-xs font-bold rounded-lg border border-border transition-all min-h-[38px]">
+              COPY
             </button>
-            <button onclick="applyDayTemplateToCurrentBuild()" class="px-3.5 py-1.5 bg-pinkAccent hover:bg-pinkAccent-hover text-white text-xs font-bold rounded-lg transition-all shadow-2xs">
+            <button onclick="applyDayTemplateToCurrentBuild()" class="px-3 py-2 bg-pinkAccent hover:bg-pinkAccent-hover text-white text-xs font-bold rounded-lg transition-all shadow-2xs min-h-[38px]">
               APPLY TEMPLATE
             </button>
           </div>
         </div>
 
-        <div class="bg-card rounded-xl border border-border p-4 sm:p-5">
-          <div id="buildScheduleContainer" class="space-y-1.5 max-h-[550px] overflow-y-auto custom-scrollbar pr-2"></div>
+        <div class="bg-card rounded-xl border border-border p-3 sm:p-5">
+          <div id="buildScheduleContainer" class="space-y-1.5 max-h-[550px] overflow-y-auto custom-scrollbar pr-1"></div>
         </div>
       </div>
 
       <!-- BUILD WEEK -->
       <div id="buildSubViewWeek" class="hidden space-y-4">
-        <div class="flex items-center justify-between bg-card p-4 rounded-xl border border-border">
-          <button onclick="changeBuildWeek(-1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
+        <div class="flex items-center justify-between bg-card p-3 sm:p-4 rounded-xl border border-border">
+          <button onclick="changeBuildWeek(-1)" class="px-2.5 py-1.5 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
           <div class="font-bold text-ink text-xs uppercase tracking-wider" id="buildWeekLabel">WEEK DATES</div>
-          <button onclick="changeBuildWeek(1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
+          <button onclick="changeBuildWeek(1)" class="px-2.5 py-1.5 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
         </div>
 
         <div class="bg-card rounded-xl border border-border overflow-hidden">
@@ -265,14 +265,14 @@
 
       <!-- BUILD MONTH -->
       <div id="buildSubViewMonth" class="hidden space-y-4">
-        <div class="flex items-center justify-between bg-card p-4 rounded-xl border border-border">
-          <button onclick="changeBuildMonth(-1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
+        <div class="flex items-center justify-between bg-card p-3 sm:p-4 rounded-xl border border-border">
+          <button onclick="changeBuildMonth(-1)" class="px-2.5 py-1.5 hover:bg-canvas rounded border border-border text-xs font-bold">&larr;</button>
           <h2 class="font-extrabold text-ink text-sm uppercase tracking-wider text-center flex-1" id="buildMonthCenteredTitle">MONTH YEAR</h2>
-          <button onclick="changeBuildMonth(1)" class="px-2 py-1 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
+          <button onclick="changeBuildMonth(1)" class="px-2.5 py-1.5 hover:bg-canvas rounded border border-border text-xs font-bold">&rarr;</button>
         </div>
 
-        <div class="bg-card rounded-xl border border-border overflow-hidden p-4">
-          <div class="grid grid-cols-7 text-center text-[11px] font-bold uppercase text-inkMuted py-2 border-b border-border">
+        <div class="bg-card rounded-xl border border-border overflow-hidden p-3 sm:p-4">
+          <div class="grid grid-cols-7 text-center text-[10px] sm:text-[11px] font-bold uppercase text-inkMuted py-2 border-b border-border">
             <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
           </div>
           <div class="grid grid-cols-7 grid-lines mt-2" id="buildMonthGrid"></div>
@@ -281,51 +281,51 @@
     </section>
 
     <!-- TAB 3: TEMPLATE -->
-    <section id="viewTEMPLATE" class="tab-content hidden space-y-6">
-      <div class="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-xl border border-border">
+    <section id="viewTEMPLATE" class="tab-content hidden space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-card p-3 sm:p-4 rounded-xl border border-border">
         <span class="text-xs font-bold uppercase tracking-wider text-inkMuted">Master Day Templates</span>
-        <div class="flex items-center gap-1 bg-canvas p-1 rounded-lg border border-border">
-          <button onclick="switchTemplateDay('Monday')" id="templateBtnMonday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Mon</button>
-          <button onclick="switchTemplateDay('Tuesday')" id="templateBtnTuesday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Tue</button>
-          <button onclick="switchTemplateDay('Wednesday')" id="templateBtnWednesday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Wed</button>
-          <button onclick="switchTemplateDay('Thursday')" id="templateBtnThursday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Thu</button>
-          <button onclick="switchTemplateDay('Friday')" id="templateBtnFriday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Fri</button>
-          <button onclick="switchTemplateDay('Saturday')" id="templateBtnSaturday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Sat</button>
-          <button onclick="switchTemplateDay('Sunday')" id="templateBtnSunday" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Sun</button>
+        <div class="flex items-center gap-1 bg-canvas p-1 rounded-lg border border-border overflow-x-auto">
+          <button onclick="switchTemplateDay('Monday')" id="templateBtnMonday" class="px-2.5 py-1.5 text-xs font-semibold rounded transition-all">Mon</button>
+          <button onclick="switchTemplateDay('Tuesday')" id="templateBtnTuesday" class="px-2.5 py-1.5 text-xs font-semibold rounded transition-all">Tue</button>
+          <button onclick="switchTemplateDay('Wednesday')" id="templateBtnWednesday" class="px-2.5 py-1.5 text-xs font-semibold rounded transition-all">Wed</button>
+          <button onclick="switchTemplateDay('Thursday')" id="templateBtnThursday" class="px-2.5 py-1.5 text-xs font-semibold rounded transition-all">Thu</button>
+          <button onclick="switchTemplateDay('Friday')" id="templateBtnFriday" class="px-2.5 py-1.5 text-xs font-semibold rounded transition-all">Fri</button>
+          <button onclick="switchTemplateDay('Saturday')" id="templateBtnSaturday" class="px-2.5 py-1.5 text-xs font-semibold rounded transition-all">Sat</button>
+          <button onclick="switchTemplateDay('Sunday')" id="templateBtnSunday" class="px-2.5 py-1.5 text-xs font-semibold rounded transition-all">Sun</button>
         </div>
       </div>
 
-      <div class="bg-card p-4 rounded-xl border border-border flex items-center justify-between">
+      <div class="bg-card p-3 sm:p-4 rounded-xl border border-border flex items-center justify-between">
         <h3 class="font-extrabold text-ink text-xs uppercase tracking-wider" id="templateDayHeader">Monday Template</h3>
         <button onclick="clearCurrentTemplateDay()" class="px-3 py-1.5 bg-canvas hover:bg-pinkAccent-light text-pinkAccent text-xs font-bold rounded-lg border border-border transition-all">
           CLEAR TEMPLATE
         </button>
       </div>
 
-      <div class="bg-card rounded-xl border border-border p-4 sm:p-5">
-        <div id="templateScheduleContainer" class="space-y-1.5 max-h-[550px] overflow-y-auto custom-scrollbar pr-2"></div>
+      <div class="bg-card rounded-xl border border-border p-3 sm:p-5">
+        <div id="templateScheduleContainer" class="space-y-1.5 max-h-[550px] overflow-y-auto custom-scrollbar pr-1"></div>
       </div>
     </section>
 
     <!-- TAB 4: GOAL -->
-    <section id="viewGOAL" class="tab-content hidden space-y-6">
-      <div class="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-xl border border-border">
+    <section id="viewGOAL" class="tab-content hidden space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-card p-3 sm:p-4 rounded-xl border border-border">
         <span class="text-xs font-bold uppercase tracking-wider text-inkMuted">Goals & Targets</span>
         
-        <div class="flex items-center gap-3">
-          <button onclick="toggleLongTermDrawer(true)" class="px-3.5 py-1.5 bg-canvas hover:bg-border/40 text-ink font-bold text-xs uppercase tracking-wider rounded-lg border border-border transition-all">
-            LONG TERM & MILESTONES
+        <div class="flex items-center gap-2">
+          <button onclick="toggleLongTermDrawer(true)" class="px-3 py-1.5 bg-canvas hover:bg-border/40 text-ink font-bold text-xs uppercase tracking-wider rounded-lg border border-border transition-all">
+            MILESTONES
           </button>
 
           <div class="flex items-center gap-1 bg-canvas p-1 rounded-lg border border-border">
-            <button onclick="switchGoalSubView('Day')" id="goalSubBtnDay" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Daily</button>
-            <button onclick="switchGoalSubView('Week')" id="goalSubBtnWeek" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Weekly</button>
-            <button onclick="switchGoalSubView('Month')" id="goalSubBtnMonth" class="px-3 py-1.5 text-xs font-semibold rounded transition-all">Monthly</button>
+            <button onclick="switchGoalSubView('Day')" id="goalSubBtnDay" class="px-2.5 py-1.5 text-xs font-semibold rounded transition-all">Daily</button>
+            <button onclick="switchGoalSubView('Week')" id="goalSubBtnWeek" class="px-2.5 py-1.5 text-xs font-semibold rounded transition-all">Weekly</button>
+            <button onclick="switchGoalSubView('Month')" id="goalSubBtnMonth" class="px-2.5 py-1.5 text-xs font-semibold rounded transition-all">Monthly</button>
           </div>
         </div>
       </div>
 
-      <div class="bg-card rounded-xl border border-border p-6 space-y-6">
+      <div class="bg-card rounded-xl border border-border p-4 sm:p-6 space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-border">
           <h3 class="font-bold text-ink text-xs uppercase tracking-wider" id="goalViewTitle">Active Goals</h3>
           <button onclick="openAddGoalModal()" class="px-3 py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-xs rounded-lg border border-border">
@@ -333,136 +333,135 @@
           </button>
         </div>
 
-        <div id="activeGoalsContainer" class="space-y-4"></div>
+        <div id="activeGoalsContainer" class="space-y-3"></div>
       </div>
     </section>
 
   </main>
 
   <!-- MODAL: EDIT TIME SLOT -->
-  <div id="multiBlockModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-card border border-border rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
+  <div id="multiBlockModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-card border border-border rounded-xl max-w-md w-full p-5 sm:p-6 shadow-xl space-y-4">
       <div class="flex justify-between items-center border-b border-border pb-3">
         <div>
-          <h3 class="font-bold text-ink text-xs uppercase tracking-wider">Edit Block</h3>
+          <h3 class="font-bold text-ink text-xs uppercase tracking-wider">Edit Slot</h3>
           <p class="text-[10px] text-inkMuted font-semibold mt-0.5" id="multiBlockStartTimeLabel">Start: --:-- --</p>
         </div>
-        <button onclick="closeMultiBlockModal()" class="text-inkMuted hover:text-ink text-lg font-bold">&times;</button>
+        <button onclick="closeMultiBlockModal()" class="text-inkMuted hover:text-ink text-2xl font-bold p-1">&times;</button>
       </div>
-      <div class="space-y-4 text-xs">
+
+      <div class="space-y-3.5 text-xs">
+        <!-- QUICK DROPDOWN FOR ANCHORS -->
         <div>
-          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Activity Name</label>
-          <input type="text" id="multiTitle" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Select from Anchors</label>
+          <select id="anchorQuickDropdown" onchange="onSelectAnchorDropdown()" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink font-semibold focus:outline-none">
+            <!-- Options dynamically added -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Or Custom Activity Name</label>
+          <input type="text" id="multiTitle" placeholder="e.g. Focused Task" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
         </div>
         
         <div>
           <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Duration Presets</label>
           <div class="grid grid-cols-6 gap-1">
-            <button type="button" onclick="setPresetDuration(15)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">15m</button>
-            <button type="button" onclick="setPresetDuration(30)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">30m</button>
-            <button type="button" onclick="setPresetDuration(60)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">1h</button>
-            <button type="button" onclick="setPresetDuration(120)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">2h</button>
-            <button type="button" onclick="setPresetDuration(240)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">4h</button>
-            <button type="button" onclick="setPresetDuration(480)" class="py-1.5 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border">8h</button>
+            <button type="button" onclick="setPresetDuration(15)" class="py-2 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border min-h-[36px]">15m</button>
+            <button type="button" onclick="setPresetDuration(30)" class="py-2 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border min-h-[36px]">30m</button>
+            <button type="button" onclick="setPresetDuration(60)" class="py-2 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border min-h-[36px]">1h</button>
+            <button type="button" onclick="setPresetDuration(120)" class="py-2 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border min-h-[36px]">2h</button>
+            <button type="button" onclick="setPresetDuration(240)" class="py-2 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border min-h-[36px]">4h</button>
+            <button type="button" onclick="setPresetDuration(480)" class="py-2 bg-canvas hover:bg-border/50 text-ink font-bold text-[10px] rounded border border-border min-h-[36px]">8h</button>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Start Time</label>
-            <select id="multiStartTime" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink font-semibold focus:outline-none"></select>
+            <select id="multiStartTime" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink font-semibold focus:outline-none min-h-[40px]"></select>
           </div>
           <div>
             <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">End Time</label>
-            <select id="multiEndTime" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink font-semibold focus:outline-none"></select>
+            <select id="multiEndTime" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink font-semibold focus:outline-none min-h-[40px]"></select>
           </div>
         </div>
 
         <div>
-          <label class="block font-bold text-inkMuted mb-2 uppercase tracking-wider text-[10px]">Color Accent</label>
-          <div id="multiColorSwatches" class="grid grid-cols-5 gap-2"></div>
+          <label class="block font-bold text-inkMuted mb-1.5 uppercase tracking-wider text-[10px]">Color Accent</label>
+          <div id="multiColorSwatches" class="grid grid-cols-5 gap-1.5"></div>
           <input type="hidden" id="multiColorVal" value="slate">
         </div>
       </div>
-      <div class="flex justify-between items-center pt-2 border-t border-border">
-        <button onclick="clearSingleBlock()" class="px-3 py-2 text-xs font-semibold text-pinkAccent hover:bg-pinkAccent-light rounded-lg">Clear Slot</button>
+
+      <div class="flex justify-between items-center pt-3 border-t border-border">
+        <button onclick="clearSingleBlock()" class="px-3 py-2 text-xs font-bold text-pinkAccent hover:bg-pinkAccent-light rounded-lg">Clear Slot</button>
         <div class="flex gap-2">
-          <button onclick="closeMultiBlockModal()" class="px-4 py-2 text-xs font-semibold text-inkMuted hover:bg-canvas rounded-lg">Cancel</button>
-          <button onclick="saveMultiBlockRange()" class="px-4 py-2 bg-ink text-white font-bold text-xs rounded-lg shadow-xs">Save</button>
+          <button onclick="closeMultiBlockModal()" class="px-3.5 py-2 text-xs font-semibold text-inkMuted hover:bg-canvas rounded-lg">Cancel</button>
+          <button onclick="saveMultiBlockRange()" class="px-4 py-2 bg-ink text-white font-bold text-xs rounded-lg shadow-xs min-h-[38px]">Save Slot</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- MODAL: MANAGE ANCHORS -->
-  <div id="anchorsModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-card border border-border rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
+  <div id="anchorsModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-card border border-border rounded-xl max-w-md w-full p-5 sm:p-6 shadow-xl space-y-4">
       <div class="flex justify-between items-center border-b border-border pb-3">
         <h3 class="font-bold text-ink text-xs uppercase tracking-wider">Manage Daily Anchors</h3>
-        <button onclick="closeManageAnchorsModal()" class="text-inkMuted hover:text-ink text-lg font-bold">&times;</button>
+        <button onclick="closeManageAnchorsModal()" class="text-inkMuted hover:text-ink text-2xl font-bold p-1">&times;</button>
       </div>
       <div class="space-y-3 text-xs">
         <div>
           <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Anchor Name</label>
-          <input type="text" id="newAnchorName" placeholder="e.g. Deep Focus, Morning Walk" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
+          <input type="text" id="newAnchorName" placeholder="e.g. Deep Focus, Walk" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
         </div>
-        <div>
-          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Duration (Minutes)</label>
-          <input type="number" id="newAnchorMins" value="60" min="15" step="15" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Target Mins</label>
+            <input type="number" id="newAnchorMins" value="60" min="15" step="15" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
+          </div>
+          <div>
+            <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Color</label>
+            <select id="newAnchorColor" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink font-semibold focus:outline-none">
+              <option value="slate">Slate Blue</option>
+              <option value="emerald">Emerald</option>
+              <option value="gold">Warm Gold</option>
+              <option value="violet">Violet</option>
+              <option value="rose">Rose Red</option>
+              <option value="coral">Coral</option>
+              <option value="amber">Amber</option>
+              <option value="cyan">Deep Cyan</option>
+              <option value="pink">Soft Pink</option>
+              <option value="sage">Sage Green</option>
+            </select>
+          </div>
         </div>
-        <button onclick="addCustomAnchor()" class="w-full py-2 bg-ink text-white text-xs font-bold rounded-lg">+ Add Anchor</button>
+        <button onclick="addCustomAnchor()" class="w-full py-2.5 bg-ink text-white text-xs font-bold rounded-lg min-h-[40px]">+ Add Anchor</button>
 
         <div class="pt-3 border-t border-border space-y-2 max-h-48 overflow-y-auto custom-scrollbar" id="anchorListContainer"></div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: MANAGE STAMPS -->
-  <div id="stampsModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-card border border-border rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
-      <div class="flex justify-between items-center border-b border-border pb-3">
-        <h3 class="font-bold text-ink text-xs uppercase tracking-wider">Manage Quick Stamps</h3>
-        <button onclick="closeManageStampsModal()" class="text-inkMuted hover:text-ink text-lg font-bold">&times;</button>
-      </div>
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Stamp Name</label>
-          <input type="text" id="newStampName" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
-        </div>
-        <div>
-          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Default Duration (Mins)</label>
-          <input type="number" id="newStampMins" value="60" min="15" step="15" class="w-full p-2.5 rounded-lg bg-canvas border border-border text-ink focus:outline-none font-medium">
-        </div>
-        <div>
-          <label class="block font-bold text-inkMuted mb-1 uppercase tracking-wider text-[10px]">Color</label>
-          <div id="stampColorSwatches" class="grid grid-cols-5 gap-2 mb-2"></div>
-          <input type="hidden" id="newStampColor" value="slate">
-        </div>
-        <button onclick="addCustomStamp()" class="w-full py-2 bg-ink text-white text-xs font-bold rounded-lg">+ Add Stamp Preset</button>
-
-        <div class="pt-3 border-t border-border space-y-2 max-h-48 overflow-y-auto custom-scrollbar" id="stampsListContainer"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DRAWER: LONG TERM GOALS -->
+  <!-- DRAWER: MILESTONES -->
   <div id="longTermDrawerBackdrop" onclick="toggleLongTermDrawer(false)" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-40 hidden"></div>
   <aside id="longTermDrawer" class="fixed top-0 right-0 h-full w-full sm:w-[440px] bg-card border-l border-border z-50 shadow-xl transform translate-x-full drawer-transition flex flex-col">
-    <div class="p-5 border-b border-border flex items-center justify-between">
+    <div class="p-4 sm:p-5 border-b border-border flex items-center justify-between">
       <div>
-        <h2 class="font-bold text-sm uppercase tracking-wider text-ink">Long Term & Milestones</h2>
+        <h2 class="font-bold text-sm uppercase tracking-wider text-ink">Milestones & Targets</h2>
       </div>
-      <button onclick="toggleLongTermDrawer(false)" class="text-inkMuted hover:text-ink text-lg font-bold">&times;</button>
+      <button onclick="toggleLongTermDrawer(false)" class="text-inkMuted hover:text-ink text-2xl font-bold p-1">&times;</button>
     </div>
-    <div class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar" id="longTermGoalsContainer"></div>
+    <div class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 custom-scrollbar" id="longTermGoalsContainer"></div>
   </aside>
 
   <!-- ADD GOAL MODAL -->
-  <div id="addGoalModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-card border border-border rounded-xl max-w-md w-full p-6 shadow-xl space-y-4">
+  <div id="addGoalModal" class="fixed inset-0 bg-ink/20 backdrop-blur-xs z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-card border border-border rounded-xl max-w-md w-full p-5 sm:p-6 shadow-xl space-y-4">
       <div class="flex justify-between items-center border-b border-border pb-3">
         <h3 class="font-bold text-ink text-xs uppercase tracking-wider" id="goalModalTitle">Add Target</h3>
-        <button onclick="closeAddGoalModal()" class="text-inkMuted hover:text-ink text-lg font-bold">&times;</button>
+        <button onclick="closeAddGoalModal()" class="text-inkMuted hover:text-ink text-2xl font-bold p-1">&times;</button>
       </div>
       <div class="space-y-3 text-xs">
         <div>
@@ -486,7 +485,7 @@
       </div>
       <div class="flex justify-end gap-2 pt-2">
         <button onclick="closeAddGoalModal()" class="px-4 py-2 text-xs font-semibold text-inkMuted hover:bg-canvas rounded-lg">Cancel</button>
-        <button onclick="saveNewGoal()" class="px-4 py-2 bg-ink text-white font-bold text-xs rounded-lg">Save Target</button>
+        <button onclick="saveNewGoal()" class="px-4 py-2 bg-ink text-white font-bold text-xs rounded-lg min-h-[38px]">Save Target</button>
       </div>
     </div>
   </div>
@@ -516,12 +515,11 @@
       schedules: {},
       dayTemplates: { Monday: {}, Tuesday: {}, Wednesday: {}, Thursday: {}, Friday: {}, Saturday: {}, Sunday: {} },
       anchors: [],
-      stamps: [],
       goals: { Day: [], Week: [], Month: [], Milestone: [] }
     };
 
     let activeClickedSlotKey = "09:00";
-    let activeStamp = null;
+    let activeAnchorIndex = null;
 
     function loadAppState() {
       const saved = localStorage.getItem('THE_TIME_APP_MASTER_DATA');
@@ -597,10 +595,10 @@
         const btn = document.getElementById(`tabBtn${t}`);
         const view = document.getElementById(`view${t}`);
         if (t === tab) {
-          btn.className = 'px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase bg-card text-ink shadow-2xs border border-border';
+          btn.className = 'px-3 sm:px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase bg-card text-ink shadow-2xs border border-border';
           view.classList.remove('hidden');
         } else {
-          btn.className = 'px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase text-inkMuted hover:text-ink';
+          btn.className = 'px-3 sm:px-5 py-2 rounded-lg text-xs font-bold tracking-wider uppercase text-inkMuted hover:text-ink';
           view.classList.add('hidden');
         }
       });
@@ -618,7 +616,7 @@
       container.innerHTML = '';
 
       if (appState.anchors.length === 0) {
-        container.innerHTML = `<span class="text-xs text-inkMuted italic">No anchors created yet. Click '+ Manage Anchors' to add your daily non-negotiables.</span>`;
+        container.innerHTML = `<span class="text-xs text-inkMuted italic">No anchors set. Tap '+ Manage' to create your core non-negotiables.</span>`;
         document.getElementById('anchorSummaryText').innerText = `0 Hours Total`;
         return;
       }
@@ -637,17 +635,77 @@
         scheduledMins += currentMinsScheduled;
 
         const isMet = currentMinsScheduled >= anc.mins;
+        const preset = PALETTE_COLORS.find(p => p.id === (anc.color || 'slate')) || PALETTE_COLORS[0];
 
         const badge = document.createElement('div');
-        badge.className = `px-3 py-1.5 rounded-lg border text-xs flex items-center gap-2 ${isMet ? 'bg-palette-emerald-bg border-palette-emerald-border text-palette-emerald-text' : 'bg-canvas border-border text-ink'}`;
+        badge.className = `px-3 py-2 rounded-lg border text-xs flex items-center gap-2 cursor-pointer transition-all ${isMet ? 'bg-palette-emerald-bg border-palette-emerald-border text-palette-emerald-text' : preset.bg + ' ' + preset.border + ' ' + preset.text}`;
+        badge.onclick = () => selectAnchorStamp(idx);
         badge.innerHTML = `
           <span class="font-bold">${anc.name}</span>
-          <span class="text-[10px] opacity-75">(${currentMinsScheduled}/${anc.mins}m)</span>
+          <span class="text-[10px] opacity-80">(${currentMinsScheduled}/${anc.mins}m)</span>
         `;
         container.appendChild(badge);
       });
 
       document.getElementById('anchorSummaryText').innerText = `${(scheduledMins / 60).toFixed(1)} / ${(totalMins / 60).toFixed(1)} Hours Scheduled`;
+      populateAnchorDropdown();
+    }
+
+    function selectAnchorStamp(idx) {
+      activeAnchorIndex = (activeAnchorIndex === idx) ? null : idx;
+      renderStampsPalette();
+    }
+
+    function renderStampsPalette() {
+      const container = document.getElementById('stampsPalette');
+      const notice = document.getElementById('activeStampNotice');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (appState.anchors.length === 0) {
+        container.innerHTML = `<span class="text-xs text-inkMuted italic">No anchors available to stamp. Add anchors above first.</span>`;
+        if (notice) notice.innerText = '';
+        return;
+      }
+
+      appState.anchors.forEach((anc, idx) => {
+        const preset = PALETTE_COLORS.find(p => p.id === (anc.color || 'slate')) || PALETTE_COLORS[0];
+        const isSelected = (activeAnchorIndex === idx);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `px-3 py-2 rounded-lg border text-xs font-bold transition-all min-h-[36px] ${preset.bg} ${preset.border} ${preset.text} ${isSelected ? 'ring-2 ring-ink scale-105 shadow-xs' : 'opacity-85'}`;
+        btn.innerText = `${anc.name} (${anc.mins}m)`;
+        btn.onclick = () => selectAnchorStamp(idx);
+        container.appendChild(btn);
+      });
+
+      if (notice) {
+        if (activeAnchorIndex !== null && appState.anchors[activeAnchorIndex]) {
+          notice.innerText = `Active Stamp: ${appState.anchors[activeAnchorIndex].name} — Tap any slot to apply`;
+        } else {
+          notice.innerText = 'Tap an anchor to select as stamp';
+        }
+      }
+    }
+
+    function populateAnchorDropdown() {
+      const dropdown = document.getElementById('anchorQuickDropdown');
+      if (!dropdown) return;
+      dropdown.innerHTML = `<option value="">-- Choose an Anchor --</option>`;
+      appState.anchors.forEach((anc, idx) => {
+        dropdown.appendChild(new Option(`${anc.name} (${anc.mins}m)`, idx));
+      });
+    }
+
+    function onSelectAnchorDropdown() {
+      const dropdown = document.getElementById('anchorQuickDropdown');
+      const idx = dropdown.value;
+      if (idx === "" || !appState.anchors[idx]) return;
+
+      const anc = appState.anchors[idx];
+      document.getElementById('multiTitle').value = anc.name;
+      selectMultiColorSwatch(anc.color || 'slate');
+      setPresetDuration(anc.mins);
     }
 
     function openManageAnchorsModal() {
@@ -676,88 +734,22 @@
     function addCustomAnchor() {
       const name = document.getElementById('newAnchorName').value.trim();
       const mins = parseInt(document.getElementById('newAnchorMins').value, 10) || 60;
+      const color = document.getElementById('newAnchorColor').value;
       if (!name) return;
-      appState.anchors.push({ name, mins });
+      appState.anchors.push({ name, mins, color });
       saveAppState();
       document.getElementById('newAnchorName').value = '';
       renderAnchorsList();
       renderAnchors();
+      renderStampsPalette();
     }
 
     function removeAnchor(idx) {
       appState.anchors.splice(idx, 1);
+      if (activeAnchorIndex === idx) activeAnchorIndex = null;
       saveAppState();
       renderAnchorsList();
       renderAnchors();
-    }
-
-    // STAMPS / PRESETS PALETTE
-    function renderStampsPalette() {
-      const container = document.getElementById('stampsPalette');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (appState.stamps.length === 0) {
-        container.innerHTML = `<span class="text-xs text-inkMuted italic">No quick stamps defined. Click '+ Manage Stamps' to set up custom presets.</span>`;
-        return;
-      }
-
-      appState.stamps.forEach((st, idx) => {
-        const preset = PALETTE_COLORS.find(p => p.id === st.color) || PALETTE_COLORS[0];
-        const btn = document.createElement('button');
-        btn.className = `px-3 py-1.5 rounded-lg border text-xs font-bold transition-all ${preset.bg} ${preset.border} ${preset.text} ${activeStamp === idx ? 'ring-2 ring-ink scale-105' : ''}`;
-        btn.innerText = `${st.name} (${st.mins}m)`;
-        btn.onclick = () => selectStamp(idx);
-        container.appendChild(btn);
-      });
-    }
-
-    function selectStamp(idx) {
-      activeStamp = (activeStamp === idx) ? null : idx;
-      renderStampsPalette();
-    }
-
-    function openManageStampsModal() {
-      renderStampsList();
-      document.getElementById('stampsModal').classList.remove('hidden');
-    }
-
-    function closeManageStampsModal() {
-      document.getElementById('stampsModal').classList.add('hidden');
-    }
-
-    function renderStampsList() {
-      const container = document.getElementById('stampsListContainer');
-      container.innerHTML = '';
-      appState.stamps.forEach((st, idx) => {
-        const preset = PALETTE_COLORS.find(p => p.id === st.color) || PALETTE_COLORS[0];
-        const item = document.createElement('div');
-        item.className = `flex justify-between items-center p-2 rounded border ${preset.bg} ${preset.border} text-xs`;
-        item.innerHTML = `
-          <div><span class="font-bold ${preset.text}">${st.name}</span> <span class="text-inkMuted">(${st.mins}m)</span></div>
-          <button onclick="removeStamp(${idx})" class="text-pinkAccent font-bold hover:underline">Remove</button>
-        `;
-        container.appendChild(item);
-      });
-    }
-
-    function addCustomStamp() {
-      const name = document.getElementById('newStampName').value.trim();
-      const mins = parseInt(document.getElementById('newStampMins').value, 10) || 60;
-      const color = document.getElementById('newStampColor').value;
-      if (!name) return;
-      appState.stamps.push({ name, mins, color });
-      saveAppState();
-      document.getElementById('newStampName').value = '';
-      renderStampsList();
-      renderStampsPalette();
-    }
-
-    function removeStamp(idx) {
-      appState.stamps.splice(idx, 1);
-      if (activeStamp === idx) activeStamp = null;
-      saveAppState();
-      renderStampsList();
       renderStampsPalette();
     }
 
@@ -833,15 +825,15 @@
           const preset = item ? (PALETTE_COLORS.find(p => p.id === item.color) || PALETTE_COLORS[0]) : null;
 
           const row = document.createElement('div');
-          row.className = `flex items-center justify-between p-3 rounded-lg border text-xs ${isCurrent ? 'ring-2 ring-pinkAccent border-pinkAccent bg-pinkAccent-light/20' : (item ? preset.bg + ' ' + preset.border : 'bg-card border-border')}`;
+          row.className = `flex items-center justify-between p-2.5 sm:p-3 rounded-lg border text-xs ${isCurrent ? 'ring-2 ring-pinkAccent border-pinkAccent bg-pinkAccent-light/20' : (item ? preset.bg + ' ' + preset.border : 'bg-card border-border')}`;
 
           row.innerHTML = `
-            <div class="flex items-center gap-3">
-              <span class="font-bold text-inkMuted w-20 text-center">${time12}</span>
+            <div class="flex items-center gap-2.5">
+              <span class="font-bold text-inkMuted w-16 sm:w-20 text-center text-[11px]">${time12}</span>
               ${preset ? `<div class="w-2.5 h-2.5 rounded-full" style="background-color: ${preset.dot}"></div>` : '<div class="w-2.5 h-2.5 rounded-full bg-border"></div>'}
               <span class="${item ? 'font-bold ' + preset.text : 'text-inkLight font-normal'}">${item ? item.text : 'Unassigned'}</span>
             </div>
-            ${isCurrent ? '<span class="text-[10px] font-extrabold text-pinkAccent border border-pinkAccent px-2 py-0.5 rounded bg-white">ACTIVE</span>' : ''}
+            ${isCurrent ? '<span class="text-[9px] font-extrabold text-pinkAccent border border-pinkAccent px-1.5 py-0.5 rounded bg-white">ACTIVE</span>' : ''}
           `;
           container.appendChild(row);
         }
@@ -885,22 +877,22 @@
         const daySchedule = appState.schedules[isoKey] || {};
 
         const col = document.createElement('div');
-        col.className = 'bg-card p-3 flex flex-col space-y-2 min-h-[220px]';
+        col.className = 'bg-card p-2 sm:p-3 flex flex-col space-y-2 min-h-[220px]';
 
         let slotKeys = Object.keys(daySchedule).sort();
         let itemsHtml = slotKeys.map(k => {
           const item = daySchedule[k];
           const preset = PALETTE_COLORS.find(p => p.id === item.color) || PALETTE_COLORS[0];
-          return `<div class="p-1.5 rounded border ${preset.bg} ${preset.border} text-[10px]"><span class="font-bold ${preset.text}">${parse12HourLabel(k)}: ${item.text}</span></div>`;
+          return `<div class="p-1 rounded border ${preset.bg} ${preset.border} text-[9px] sm:text-[10px]"><span class="font-bold ${preset.text}">${parse12HourLabel(k)}: ${item.text}</span></div>`;
         }).join('');
 
         col.innerHTML = `
-          <div class="border-b border-border pb-1.5 flex justify-between items-center">
-            <span class="text-xs font-bold text-ink uppercase">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]}</span>
-            <span class="text-[10px] text-inkMuted font-bold">${formatAussieDate(d, false)}</span>
+          <div class="border-b border-border pb-1 flex justify-between items-center">
+            <span class="text-[10px] sm:text-xs font-bold text-ink uppercase">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]}</span>
+            <span class="text-[9px] text-inkMuted font-bold">${formatAussieDate(d, false)}</span>
           </div>
-          <div class="flex-1 space-y-1.5 overflow-y-auto custom-scrollbar">
-            ${itemsHtml || '<span class="text-[10px] text-inkLight italic">No slots</span>'}
+          <div class="flex-1 space-y-1 overflow-y-auto custom-scrollbar">
+            ${itemsHtml || '<span class="text-[9px] text-inkLight italic">No slots</span>'}
           </div>
         `;
         grid.appendChild(col);
@@ -943,10 +935,10 @@
         const count = Object.keys(daySchedule).length;
 
         const cell = document.createElement('div');
-        cell.className = `p-2 min-h-[75px] flex flex-col justify-between bg-card`;
+        cell.className = `p-1.5 sm:p-2 min-h-[65px] sm:min-h-[75px] flex flex-col justify-between bg-card`;
         cell.innerHTML = `
           <span class="text-xs font-bold text-ink">${day}</span>
-          ${count > 0 ? `<div class="text-[10px] text-pinkAccent font-bold">${count} slots</div>` : ''}
+          ${count > 0 ? `<div class="text-[9px] text-pinkAccent font-bold">${count} slots</div>` : ''}
         `;
         grid.appendChild(cell);
       }
@@ -1010,7 +1002,6 @@
 
     function renderBuildDayEditor() {
       const curDate = parseISODate(appState.selectedDate);
-      document.getElementById('buildDayFormattedLabel').innerText = formatAussieDate(curDate, true);
       const picker = document.getElementById('buildDatePicker');
       if (picker) picker.value = appState.selectedDate;
 
@@ -1026,31 +1017,31 @@
           const preset = PALETTE_COLORS.find(p => p.id === slotData.color) || PALETTE_COLORS[0];
 
           const row = document.createElement('div');
-          row.className = `flex items-center justify-between p-2.5 rounded-lg border text-xs cursor-pointer transition-all hover:scale-[1.001] ${slotData.text ? preset.bg + ' ' + preset.border : 'bg-canvas/40 border-border/70 hover:bg-card'}`;
+          row.className = `flex items-center justify-between p-2 sm:p-2.5 rounded-lg border text-xs cursor-pointer transition-all ${slotData.text ? preset.bg + ' ' + preset.border : 'bg-canvas/40 border-border/70 hover:bg-card'}`;
 
           row.onclick = (e) => {
             if (e.target.tagName === 'BUTTON') return;
-            if (activeStamp !== null && appState.stamps[activeStamp]) {
-              applyStampToSlot(time24Str, appState.stamps[activeStamp]);
+            if (activeAnchorIndex !== null && appState.anchors[activeAnchorIndex]) {
+              applyAnchorToSlot(time24Str, appState.anchors[activeAnchorIndex]);
             } else {
               openSlotEditModal(time24Str);
             }
           };
 
           row.innerHTML = `
-            <div class="flex items-center gap-3">
-              <span class="font-bold text-inkMuted w-20 text-center">${time12Str}</span>
+            <div class="flex items-center gap-2 sm:gap-3">
+              <span class="font-bold text-inkMuted w-16 sm:w-20 text-center text-[11px]">${time12Str}</span>
               <div class="w-2.5 h-2.5 rounded-full" style="background-color: ${preset.dot}"></div>
               <span class="${slotData.text ? 'font-semibold ' + preset.text : 'text-inkLight italic'}">
-                ${slotData.text || 'Unassigned block'}
+                ${slotData.text || 'Unassigned slot'}
               </span>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5">
               ${slotData.text ? `
-                <button onclick="adjustSlotDuration('${time24Str}', -15)" class="px-2 py-0.5 bg-card border border-border rounded font-bold text-[10px]">-15m</button>
-                <button onclick="adjustSlotDuration('${time24Str}', 15)" class="px-2 py-0.5 bg-card border border-border rounded font-bold text-[10px]">+15m</button>
+                <button onclick="adjustSlotDuration('${time24Str}', -15)" class="px-2 py-1 bg-card border border-border rounded font-bold text-[10px] min-h-[28px]">-15m</button>
+                <button onclick="adjustSlotDuration('${time24Str}', 15)" class="px-2 py-1 bg-card border border-border rounded font-bold text-[10px] min-h-[28px]">+15m</button>
               ` : ''}
-              <span class="text-[10px] font-bold text-inkMuted hover:text-ink">EDIT &rarr;</span>
+              <span class="text-[10px] font-bold text-inkMuted hover:text-ink px-1">EDIT</span>
             </div>
           `;
           container.appendChild(row);
@@ -1058,20 +1049,20 @@
       }
     }
 
-    function applyStampToSlot(startTimeKey, stamp) {
+    function applyAnchorToSlot(startTimeKey, anc) {
       if (!appState.schedules[appState.selectedDate]) appState.schedules[appState.selectedDate] = {};
       const targetStore = appState.schedules[appState.selectedDate];
 
       const [h, m] = startTimeKey.split(':').map(Number);
       const startMin = h * 60 + m;
-      const endMin = startMin + stamp.mins;
+      const endMin = startMin + anc.mins;
 
       for (let min = startMin; min < endMin; min += 15) {
         if (min >= 24 * 60) break;
         const curH = Math.floor(min / 60);
         const curM = min % 60;
         const key = `${String(curH).padStart(2, '0')}:${String(curM).padStart(2, '0')}`;
-        targetStore[key] = { text: stamp.name, color: stamp.color };
+        targetStore[key] = { text: anc.name, color: anc.color || 'slate' };
       }
 
       saveAppState();
@@ -1127,6 +1118,7 @@
 
       document.getElementById('multiTitle').value = slotData.text || '';
       document.getElementById('multiStartTime').value = timeKey;
+      document.getElementById('anchorQuickDropdown').value = "";
 
       const [h, m] = timeKey.split(':').map(Number);
       let endM = m + 15;
@@ -1229,25 +1221,16 @@
     }
 
     function initSwatches() {
-      const boxes = [
-        { id: 'multiColorSwatches', valId: 'multiColorVal', prefix: 'swatch_multi_' },
-        { id: 'stampColorSwatches', valId: 'newStampColor', prefix: 'swatch_stamp_' }
-      ];
-
-      boxes.forEach(boxObj => {
-        const box = document.getElementById(boxObj.id);
-        if (!box) return;
-        box.innerHTML = '';
-        PALETTE_COLORS.forEach(p => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = `h-8 rounded-lg border ${p.bg} ${p.border} flex items-center justify-center font-bold text-[10px] ${p.text}`;
-          btn.innerText = p.name.split(' ')[0];
-          btn.onclick = () => {
-            document.getElementById(boxObj.valId).value = p.id;
-          };
-          box.appendChild(btn);
-        });
+      const box = document.getElementById('multiColorSwatches');
+      if (!box) return;
+      box.innerHTML = '';
+      PALETTE_COLORS.forEach(p => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `h-8 rounded-lg border ${p.bg} ${p.border} flex items-center justify-center font-bold text-[10px] ${p.text}`;
+        btn.innerText = p.name.split(' ')[0];
+        btn.onclick = () => selectMultiColorSwatch(p.id);
+        box.appendChild(btn);
       });
     }
 
@@ -1265,7 +1248,7 @@
     function renderTemplateView() {
       ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].forEach(d => {
         const btn = document.getElementById(`templateBtn${d}`);
-        if (btn) btn.className = (d === appState.templateDay) ? 'px-3 py-1.5 text-xs font-semibold rounded bg-card text-ink shadow-2xs border border-border' : 'px-3 py-1.5 text-xs font-semibold rounded text-inkMuted hover:text-ink';
+        if (btn) btn.className = (d === appState.templateDay) ? 'px-2.5 py-1.5 text-xs font-semibold rounded bg-card text-ink shadow-2xs border border-border' : 'px-2.5 py-1.5 text-xs font-semibold rounded text-inkMuted hover:text-ink';
       });
 
       document.getElementById('templateDayHeader').innerText = `${appState.templateDay} Template`;
@@ -1282,16 +1265,16 @@
           const preset = PALETTE_COLORS.find(p => p.id === slotData.color) || PALETTE_COLORS[0];
 
           const row = document.createElement('div');
-          row.className = `flex items-center justify-between p-2.5 rounded-lg border text-xs cursor-pointer ${slotData.text ? preset.bg + ' ' + preset.border : 'bg-canvas/40 border-border/70 hover:bg-card'}`;
+          row.className = `flex items-center justify-between p-2 sm:p-2.5 rounded-lg border text-xs cursor-pointer ${slotData.text ? preset.bg + ' ' + preset.border : 'bg-canvas/40 border-border/70 hover:bg-card'}`;
           row.setAttribute('onclick', `openSlotEditModal('${time24Str}')`);
 
           row.innerHTML = `
-            <div class="flex items-center gap-3">
-              <span class="font-bold text-inkMuted w-20 text-center">${time12Str}</span>
+            <div class="flex items-center gap-2 sm:gap-3">
+              <span class="font-bold text-inkMuted w-16 sm:w-20 text-center text-[11px]">${time12Str}</span>
               <div class="w-2.5 h-2.5 rounded-full" style="background-color: ${preset.dot}"></div>
-              <span class="${slotData.text ? 'font-semibold ' + preset.text : 'text-inkLight italic'}">${slotData.text || 'Unassigned template block'}</span>
+              <span class="${slotData.text ? 'font-semibold ' + preset.text : 'text-inkLight italic'}">${slotData.text || 'Unassigned block'}</span>
             </div>
-            <span class="text-[10px] font-bold text-inkMuted hover:text-ink">EDIT &rarr;</span>
+            <span class="text-[10px] font-bold text-inkMuted hover:text-ink px-1">EDIT</span>
           `;
           container.appendChild(row);
         }
@@ -1331,7 +1314,7 @@
       saveAppState();
       ['Day', 'Week', 'Month'].forEach(s => {
         const btn = document.getElementById(`goalSubBtn${s}`);
-        if (btn) btn.className = (s === sub) ? 'px-3 py-1.5 text-xs font-semibold rounded bg-card text-ink shadow-2xs border border-border' : 'px-3 py-1.5 text-xs font-semibold rounded text-inkMuted hover:text-ink';
+        if (btn) btn.className = (s === sub) ? 'px-2.5 py-1.5 text-xs font-semibold rounded bg-card text-ink shadow-2xs border border-border' : 'px-2.5 py-1.5 text-xs font-semibold rounded text-inkMuted hover:text-ink';
       });
       renderGoalView();
     }
@@ -1345,12 +1328,12 @@
       container.innerHTML = '';
 
       if (list.length === 0) {
-        container.innerHTML = `<div class="text-center py-8 text-xs text-inkMuted italic">No active goals set for this view.</div>`;
+        container.innerHTML = `<div class="text-center py-6 text-xs text-inkMuted italic">No active goals set for this view.</div>`;
       } else {
         list.forEach((g, idx) => {
           const pct = Math.round((g.current / g.target) * 100);
           const card = document.createElement('div');
-          card.className = 'bg-canvas/50 p-4 rounded-xl border border-border space-y-3';
+          card.className = 'bg-canvas/50 p-3.5 sm:p-4 rounded-xl border border-border space-y-2.5';
           card.innerHTML = `
             <div class="flex items-center justify-between">
               <div>
@@ -1358,9 +1341,9 @@
                 <span class="text-[11px] text-inkMuted font-semibold">${g.current} / ${g.target} ${g.unit} (${pct}%)</span>
               </div>
               <div class="flex items-center gap-1.5">
-                <button onclick="adjustGoalProgress('${type}', ${idx}, -1)" class="px-2 py-1 bg-card border border-border hover:bg-canvas rounded text-xs font-bold">-</button>
-                <button onclick="adjustGoalProgress('${type}', ${idx}, 1)" class="px-2 py-1 bg-card border border-border hover:bg-canvas rounded text-xs font-bold">+</button>
-                <button onclick="removeGoal('${type}', ${idx})" class="px-2 py-1 bg-card border border-border hover:bg-canvas rounded text-xs font-bold text-pinkAccent">Remove</button>
+                <button onclick="adjustGoalProgress('${type}', ${idx}, -1)" class="px-2.5 py-1 bg-card border border-border hover:bg-canvas rounded text-xs font-bold min-h-[30px]">-</button>
+                <button onclick="adjustGoalProgress('${type}', ${idx}, 1)" class="px-2.5 py-1 bg-card border border-border hover:bg-canvas rounded text-xs font-bold min-h-[30px]">+</button>
+                <button onclick="removeGoal('${type}', ${idx})" class="px-2.5 py-1 bg-card border border-border hover:bg-canvas rounded text-xs font-bold text-pinkAccent min-h-[30px]">Remove</button>
               </div>
             </div>
             <div class="w-full bg-border/60 h-2 rounded-full overflow-hidden">
